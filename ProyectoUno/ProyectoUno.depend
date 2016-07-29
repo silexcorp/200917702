@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1469779803 source:/home/lex/Documentos/Proyectos/200917702/ProyectoUno/main.c
+	<stdio.h>
+	<stdlib.h>
+
