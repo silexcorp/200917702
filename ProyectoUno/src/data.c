@@ -662,7 +662,7 @@ void analizar_entrada(char *entrada){
             }
             //printf("    DATA: %s,\'%s\'\n",compare,final);
             if(strcasecmp(compare, PATH)==0){
-                //printf("PATH: \'%s\'\n",final);
+                printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -678,7 +678,7 @@ void analizar_entrada(char *entrada){
                     o_path = 1;
                 }
             }else if(strcasecmp(compare, NAME)==0){
-                //printf("NAME: \'%s\'\n",final);
+                printf("NAME: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -830,7 +830,7 @@ void analizar_entrada(char *entrada){
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
-            //printf("CONCA: %s\n",compare);
+            printf("FREE: %s\n",compare);
             if(strcasecmp(compare, "K")==0){
                 o_k = 1;
             }else if(strcasecmp(compare, "M")==0){
@@ -856,6 +856,128 @@ void analizar_entrada(char *entrada){
             //#    crear_disco(r_size,r_unit,pa,na);
         }else if(o_k == 1){
             printf("  DATA: %d\n",o_k);
+            //#    crear_disco(r_size,r_unit,pa,na);
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+
+    /*
+     * Analiza el comando para DISK USED */
+    else if(strcasecmp(DU,vect[0]) == 0){
+        int r_size;
+        char r_path[200]; r_path[0] = '\0';
+        int o_h = 0, o_n = 0, o_path=0, car = 0;
+        printf("  \033[%dmDISCO USADO: %s\033[0m\a\n",VERDE,vect[0]);
+        //Para verificar si se ingresaron los parametros obligatorios
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                //printf("CHAR: %c\n",vect[cont][cont1]);
+                if(vect[cont][cont1] != 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    //printf("CHAR: %d,%c\n",cont1,vect[cont][cont1]);
+                    if(vect[cont][1] != 'p'){
+                        //printf(" COMP: %c,%c\n",vect[cont][1],vect[cont][cont1]);
+                        if(((vect[cont][cont1] == 'h' ) ||
+                            (vect[cont][cont1] == 'H' )) && car == 0){
+                            car = 1;
+                            //cont1++;contador++;
+                            break;
+                        }
+                    }
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            if(car == 1){
+                //puts("EEEEES CARACTER");
+                o_h = 1;
+                car = 2;
+            }else{
+                contador++;contador++;cont1++;cont1++;
+                for(;cont1 < tama;cont1++){
+                    concatenar_char(final,vect[cont][cont1]);
+                }
+
+
+                /*
+                if(vect[cont][0]=='n' || compare[0]=='N'){
+                    char *temp = malloc(sizeof(compare)+1);
+                    strcpy(temp,compare);
+                    compare[0] = final[0] = '\0';
+                    strcpy(compare,"n");
+                    //final = malloc(sizeof(compare)+1);
+                    int a = 3;
+                    for(;a < sizeof(compare)+1; a++){
+                        concatenar_char(final,compare[a]);
+                    }
+                    puts("ES UNAS FSDASFSD");
+
+                }*/
+
+
+                //printf("    DATA(: %s,\'%s\'\n",compare,final);
+                if(strcasecmp(compare, PATH)==0){
+                    //printf("PATH: \'%s\'\n",final);
+                    // Verificar si no esta entre comillas //
+                    if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                        for(;auxi < end;auxi++){
+                            if(final[auxi] != '"'){
+                                concatenar_char(r_path,final[auxi]);
+                            }else{
+                                break;
+                            }
+                        }
+                        o_path = 1;
+                    }else{
+                        strcpy(r_path,final);
+                        o_path = 1;
+                    }
+                }else if(strcasecmp(compare, "N")==0){
+                    //printf("N: \'%s\'\n",final);
+                    if(atoi(final) > 0){
+                        r_size = atoi(final);
+                         o_n = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\", \'%s\' tamaño incompatible, debe ser mayor que 0\033[0m\n" ,ROJO,MAGENTA,SIZE,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }else{
+                    if(compare[0] == 0){
+                        //Ignorara
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        //return;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+                final[0] = compare[0] = '\0';
+                tama = 0;cont1 = 1; //Reinicializar parámetros
+
+            }
+
+
+        }
+
+        /* Verifica parámetros obligatorios */
+        if(o_h == 1){
+            printf("  DATA H Ok: %d\n",o_h);
+            if(o_n == 1 || o_path == 1){
+                printf("  Final Ok, N: %d, Path: %s\n",r_size, r_path);
+                //#    crear_disco(r_size,r_unit,pa,na);
+            }
             //#    crear_disco(r_size,r_unit,pa,na);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
@@ -2753,12 +2875,6 @@ void analizar_entrada(char *entrada){
 
     printf("                        FINALIZANDO PROCESO... %s \n",vect[0]);
 }
-
-
-
-
-
-
 
 
 
