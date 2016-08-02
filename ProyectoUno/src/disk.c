@@ -16,6 +16,87 @@ void set_time(time_t t){
    struct tm *tcreacion = localtime(&t);
    strftime(fecha,16,"%d/%m/%y %H:%M",tcreacion);
 }
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    CREAR DISCO
+ /*
+  * Crear discos con los siguientes parámetros */
+void crear_disco(int size, char unit, char *path, char*name){
+    /*
+     * Creando disco con parametros obtenidos */
+    exe("CREANDO DISCO:",name);
+    /* Para un numero random */
+
+    srand(time(NULL));
+    MBR mbr;
+    int size_disco = 0;
+    buffer[0] = '\0';
+
+    /* Inicilziar valores de MBR */
+    mbr.mbr_partition_1.part_fit = ' ';
+    mbr.mbr_partition_1.part_name[0] = '\0';
+    mbr.mbr_partition_1.part_size = 0;
+    mbr.mbr_partition_1.part_start = 0;
+    mbr.mbr_partition_1.part_status = '0';
+    mbr.mbr_partition_1.part_type = ' ';
+
+    mbr.mbr_partition_2.part_fit = ' ';
+    mbr.mbr_partition_2.part_name[0] = '\0';
+    mbr.mbr_partition_2.part_size = 0;
+    mbr.mbr_partition_2.part_start = 0;
+    mbr.mbr_partition_2.part_status = '0';
+    mbr.mbr_partition_2.part_type = ' ';
+
+    mbr.mbr_partition_3.part_fit = ' ';
+    mbr.mbr_partition_3.part_name[0] = '\0';
+    mbr.mbr_partition_3.part_size = 0;
+    mbr.mbr_partition_3.part_start = 0;
+    mbr.mbr_partition_3.part_status = '0';
+    mbr.mbr_partition_3.part_type = ' ';
+
+    mbr.mbr_partition_4.part_fit = ' ';
+    mbr.mbr_partition_4.part_name[0] = '\0';
+    mbr.mbr_partition_4.part_size = 0;
+    mbr.mbr_partition_4.part_start = 0;
+    mbr.mbr_partition_4.part_status = '0';
+    mbr.mbr_partition_4.part_type = ' ';
+
+    mbr.mbr_fecha_creacion = get_time();
+    mbr.mbr_disk_signature = rand()%1001;
+
+    /*
+     * Ver archivo y su ubicación */
+    establecer_nombre(path,name);
+    /*
+     * Crear directorio o carpeta */
+    crear_carpeta(path);
+    /*
+     * Verificar archivo, si no existe lo crea */
+    FILE *f = fopen(ubicacion_archivo,"w");
+    if(f!=NULL){
+        //printf("Creando disco...\n");
+        if(unit == 'K' || unit == 'k'){
+            size_disco = size*1024;
+        }else if(unit == 'M' || unit == 'm'){
+            size_disco = size*1024*1024;
+        }
+
+        for(inde=0;inde<size_disco;inde++){
+            fwrite (buffer, sizeof(buffer), 1, f);
+        }
+        rewind(f);
+
+        mbr.mbr_tamanio = size_disco;
+        fwrite(&mbr,sizeof(MBR),1,f);
+        fflush(f);
+        fclose(f);
+        inf("disco creado exitosamente");
+
+    }else{
+        //fclose(f);
+        err("al crear archivo","el archivo ya existente");
+    }
+   leerMBR(ubicacion_archivo);
+
+}
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    ELIMINAR DISCO
 /*
@@ -159,87 +240,6 @@ void verificar_ebr(char* dir,int posicion){
      }
 }
 
-//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    CREAR DISCO
- /*
-  * Crear discos con los siguientes parámetros */
-void crear_disco(int size, char unit, char *path, char*name){
-    /*
-     * Creando disco con parametros obtenidos */
-    exe("CREANDO DISCO:",name);
-    /* Para un numero random */
-
-    srand(time(NULL));
-    MBR mbr;
-    int size_disco = 0;
-    buffer[0] = '\0';
-
-    /* Inicilziar valores de MBR */
-    mbr.mbr_partition_1.part_fit = ' ';
-    mbr.mbr_partition_1.part_name[0] = '\0';
-    mbr.mbr_partition_1.part_size = 0;
-    mbr.mbr_partition_1.part_start = 0;
-    mbr.mbr_partition_1.part_status = '0';
-    mbr.mbr_partition_1.part_type = ' ';
-
-    mbr.mbr_partition_2.part_fit = ' ';
-    mbr.mbr_partition_2.part_name[0] = '\0';
-    mbr.mbr_partition_2.part_size = 0;
-    mbr.mbr_partition_2.part_start = 0;
-    mbr.mbr_partition_2.part_status = '0';
-    mbr.mbr_partition_2.part_type = ' ';
-
-    mbr.mbr_partition_3.part_fit = ' ';
-    mbr.mbr_partition_3.part_name[0] = '\0';
-    mbr.mbr_partition_3.part_size = 0;
-    mbr.mbr_partition_3.part_start = 0;
-    mbr.mbr_partition_3.part_status = '0';
-    mbr.mbr_partition_3.part_type = ' ';
-
-    mbr.mbr_partition_4.part_fit = ' ';
-    mbr.mbr_partition_4.part_name[0] = '\0';
-    mbr.mbr_partition_4.part_size = 0;
-    mbr.mbr_partition_4.part_start = 0;
-    mbr.mbr_partition_4.part_status = '0';
-    mbr.mbr_partition_4.part_type = ' ';
-
-    mbr.mbr_fecha_creacion = get_time();
-    mbr.mbr_disk_signature = rand()%1001;
-
-    /*
-     * Ver archivo y su ubicación */
-    establecer_nombre(path,name);
-    /*
-     * Crear directorio o carpeta */
-    crear_carpeta(path);
-    /*
-     * Verificar archivo, si no existe lo crea */
-    FILE *f = fopen(ubicacion_archivo,"w");
-    if(f!=NULL){
-        //printf("Creando disco...\n");
-        if(unit == 'K' || unit == 'k'){
-            size_disco = size*1024;
-        }else if(unit == 'M' || unit == 'm'){
-            size_disco = size*1024*1024;
-        }
-
-        for(inde=0;inde<size_disco;inde++){
-            fwrite (buffer, sizeof(buffer), 1, f);
-        }
-        rewind(f);
-
-        mbr.mbr_tamanio = size_disco;
-        fwrite(&mbr,sizeof(MBR),1,f);
-        fflush(f);
-        fclose(f);
-        inf("disco creado exitosamente");
-
-    }else{
-        //fclose(f);
-        err("al crear archivo","el archivo ya existente");
-    }
-   leerMBR(ubicacion_archivo);
-
-}
 
 int inicio_ultima_particion_creada(char* dir){
 

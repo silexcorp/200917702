@@ -230,7 +230,7 @@ void analizar_entrada(char *entrada){
             }
             //printf("CONCA: %s\n",compare);
             if(strcasecmp(compare, SIZE)==0){
-                printf("SIZE: \'%s\'\n",final);
+                //printf("SIZE: \'%s\'\n",final);
                 r_size = atoi(final);
                 if(r_size > 0){
                     o_ta = 1;
@@ -268,7 +268,7 @@ void analizar_entrada(char *entrada){
                     return;
                 }
             }else if(strcasecmp(compare, NAME)==0){
-                printf("NAME: \'%s\'\n",final);
+                //printf("NAME: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -313,12 +313,12 @@ void analizar_entrada(char *entrada){
             r_unit = 'M';
         }
         /* Verifica parámetros obligatorios */
-        if(o_path == 1 && o_ta == 1){
+        if(o_path == 1 && o_ta == 1 && o_na){
             /* Mandar a CREAR disco */
-            char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));//pa=get_path(r_path);
-            char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));//pa=get_name(r_path);
-            printf("  DATA: %s, %s\n",pa,na);
-            //#    crear_disco(r_size,r_unit,pa,na);
+            //char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));//pa=get_path(r_path);
+            char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_name));//pa=get_name(r_path);
+            printf("  DATA: %s, %s, %c\n",r_path,na,r_unit);
+                crear_disco(r_size,r_unit,r_path,na);
             //inf("disco creado exitosamente");
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
@@ -385,7 +385,7 @@ void analizar_entrada(char *entrada){
             /* Mandar a ELIMINAR disco */
             char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));
             char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));
-            //#    eliminar_disco(pa,na);
+            eliminar_disco(pa,na);
             //inf("disco eliminado exitosamente");
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
@@ -429,7 +429,6 @@ void analizar_entrada(char *entrada){
      * Analiza el comando para FORMATEAR disco */
     else if(strcasecmp(FDISK,vect[0]) == 0){
         printf("  \033[%dmCREAR PARTICION: %s\033[0m\a\n",VERDE,vect[0]);
-
         char r_unit, r_path[450], r_name[20], r_delet[30];
                      r_path[0] =  r_name[0] = r_delet[0] = '\0';
         int  r_size = 0, r_add = 0; char  r_type, r_fit;
@@ -611,23 +610,23 @@ void analizar_entrada(char *entrada){
             /* Mandar a CREAR PARTICION en disco */
             inf("creando partición...");
             //printf("  DATA \n\tPATH: '%s\' \n\tNAME: \'%s\' \n\tSIZE: \'%d\' \n\tUNIT: \'%c\' \n\tTYPE: \'%c\' \n\tFIT: \'%c\' \n\tpNAME: \'%s\' \n",pa,na,r_size,r_unit,r_type,r_fit,r_name);
-            //#    crear_particion(r_path,r_size,r_unit,r_type,r_fit,r_name);
+            crear_particion(r_path,r_size,r_unit,r_type,r_fit,r_name);
 
         }else if(o_path == 1 && o_na == 1){
             if(n_del == 1){//Usa: name y path : type full o fast
                 inf("eliminando particion...");
                 printf("  DATA \n\tPATH: '%s\' \n\tNAME: \'%s\' \n\tDELTE: \'%s\' \n\tpNAME: \'%s\' \n",pa,na,r_delet,r_name);
-                //#    eliminar_particion(r_path,r_name, r_delet);
+                eliminar_particion(r_path,r_name, r_delet);
             }else if(n_add == 1){
                 //inf("agregando/quitanso espacio...");
                 printf("  DATA \n\tPATH: '%s\' \n\tNAME: \'%s\' \n\tUNIT: \'%c\' \n\tADD: \'%d\' \n\tpNAME: \'%s\' \n",pa,na,r_unit,r_add,r_name);
                 if(r_add < 0){
                     int espacio = r_add*-1;
                     inf("eliminando espacio en particion...");
-                    //#    eliminar_espacio_particion(r_path,r_name,r_unit,espacio);
+                    eliminar_espacio_particion(r_path,r_name,r_unit,espacio);
                 }else{
                     inf("agregando espacio en particion...");
-                    //#    agregar_espacio_particion(r_path,r_name,r_unit,r_add);
+                    agregar_espacio_particion(r_path,r_name,r_unit,r_add);
                 }
             }
         }else{
@@ -662,7 +661,7 @@ void analizar_entrada(char *entrada){
             }
             //printf("    DATA: %s,\'%s\'\n",compare,final);
             if(strcasecmp(compare, PATH)==0){
-                printf("PATH: \'%s\'\n",final);
+                //printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -678,7 +677,7 @@ void analizar_entrada(char *entrada){
                     o_path = 1;
                 }
             }else if(strcasecmp(compare, NAME)==0){
-                printf("NAME: \'%s\'\n",final);
+                //printf("NAME: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -725,7 +724,7 @@ void analizar_entrada(char *entrada){
             char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));//pa=get_path(r_path);
             char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));//pa=get_name(r_path);
             exe(r_path,"montando partición");
-            //#    montar_particion(r_path,r_name);
+            montar_particion(r_path,r_name);
             //printf("DATA path: \'%s\' name: \'%s\'\n",pa,na);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
@@ -805,7 +804,7 @@ void analizar_entrada(char *entrada){
 
         /* Verifica parámetros obligatorios para CREAR */
         if(o_id == 1){
-            //#    desmontar_particion(r_id);
+            desmontar_particion(r_id);
             //inf("particion desmontada exitosamente");
             //printf("    SUCCESS UNMOUNT: \'%s\'\n",r_id);
         }else{
@@ -1000,7 +999,7 @@ void analizar_entrada(char *entrada){
                     break;
                 }
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
@@ -1123,23 +1122,26 @@ void analizar_entrada(char *entrada){
             crear_carpeta(pa);
             //char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));
             //char *ex;ex = malloc(sizeof(100));strcpy(ex,get_ext(r_path));
-            /*if(strcasecmp(r_name,DDISK)==0){
+            if(strcasecmp(r_name,DDISK)==0){
                 Reporte_Disco(r_id,r_path,r_name);
                 //generar_reporte_disco(pa,na,ex,r_id);
             }else if(strcasecmp(r_name,MMBR)==0){
                 Reporte_MBR_EBR(r_id,r_path,r_name);
                 //generar_reporte_mbr(pa,na,ex,r_id);
-            }else if(strcasecmp(r_name,SB)==0){
+            }
+            /*else if(strcasecmp(r_name,SB)==0){
                 buscando_super_bloque(r_id,r_path);
-            }else if(strcasecmp(r_name,BM_AVD)==0){
-                buscar_bitmaps(r_id,r_path, BM_AVD);
-            }else if(strcasecmp(r_name,BM_DD)==0){
-                buscar_bitmaps(r_id,r_path, BM_DD);
+            }else if(strcasecmp(r_name,TREE)==0){
+                buscar_bitmaps(r_id,r_path, TREE);
+            }else if(strcasecmp(r_name,FFILE)==0){
+                buscar_bitmaps(r_id,r_path, FFILE);
+            }else if(strcasecmp(r_name,JOURNALING)==0){
+                buscar_bitmaps(r_id,r_path, JOURNALING);
             }else if(strcasecmp(r_name,BM_INODE)==0){
                 buscar_bitmaps(r_id,r_path, BM_INODE);
             }else if(strcasecmp(r_name,BM_BLOCK)==0){
                 buscar_bitmaps(r_id,r_path, BM_BLOCK);
-            }else if(strcasecmp(r_name,AVDS)==0){
+            }else if(strcasecmp(r_name,LS)==0){
                 buscar_carpetas(r_id,r_path);
             }*/
             /*else if(strcasecmp(r_name,BLOCK)==0){
