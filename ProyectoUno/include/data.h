@@ -18,7 +18,12 @@
 #define MOUNT  "mount"
 #define UMOUNT "umount"
 #define DF     "df"
+#define DU     "du"
 #define MKFS   "mkfs"
+#define FS     "fs"
+#define FS2    "2fs"
+#define FS3    "3fs"
+#define JOURNALING    "JOURNALING"
 
 #define EXIT   "exit"
 #define HELP   "help"
@@ -188,6 +193,7 @@ while (nueva_cadena != NULL){
     }
     nueva_cadena = strtok (NULL, "");
 }*/
+
 
 
 #endif // DATA_H

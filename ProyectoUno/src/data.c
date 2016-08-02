@@ -135,7 +135,7 @@ void analizr_script(char *cmd){
                         //return;
                     }else{
                         printf("\033[%dmCADENA LEIDA: \"%s\" \033[%dm(%d)\033[0m\n",AMARILLO,entrada,CYAN, get_size(entrada));
-                        if(get_size(entrada) > 6){
+                        if(get_size(entrada) > 4){
                             analizar_entrada(entrada);
                         }else{
                             err(entrada,"comando muy pequeño");
@@ -851,11 +851,8 @@ void analizar_entrada(char *entrada){
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
         /* Verifica parámetros obligatorios */
-        if(o_k == 1){
-            printf("  DATA: %d\n",o_k);
-            //#    crear_disco(r_size,r_unit,pa,na);
-        }else if(o_k == 1){
-            printf("  DATA: %d\n",o_k);
+        if(1){
+            printf("  DATA:  %d, %d, %d, %d (k,m,h,i)\n",o_k,o_m,o_h,o_i);
             //#    crear_disco(r_size,r_unit,pa,na);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
@@ -877,7 +874,7 @@ void analizar_entrada(char *entrada){
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
                 //printf("CHAR: %c\n",vect[cont][cont1]);
-                if(vect[cont][cont1] != 0){break;}
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     //printf("CHAR: %d,%c\n",cont1,vect[cont][cont1]);
                     if(vect[cont][1] != 'p'){
@@ -985,8 +982,6 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
-
     /*
      * Analiza el comando REP para buscar archivo o carpeta */
     else if(strcasecmp(REP,vect[0]) == 0){
@@ -1026,10 +1021,10 @@ void analizar_entrada(char *entrada){
                     //o_name = 1;
                 }
                 if(strcasecmp(r_name,BM_INODE) == 0 || strcasecmp(r_name,BM_BLOCK) == 0 ||
-                   strcasecmp(r_name,BM_AVD) == 0   || strcasecmp(r_name,BM_DD) == 0 ||
+                   strcasecmp(r_name,INODE) == 0   || strcasecmp(r_name,BLOCK) == 0 ||
                    strcasecmp(r_name,TREE) == 0  || strcasecmp(r_name,SB) == 0    ||
-                   strcasecmp(r_name,FFILE) == 0    || strcasecmp(r_name,DD_FILE) == 0 ||
-                   strcasecmp(r_name,AVDS) == 0    || strcasecmp(r_name,LOGG) == 0 ||
+                   strcasecmp(r_name,FFILE) == 0    || strcasecmp(r_name,JOURNALING) == 0 ||
+                   strcasecmp(r_name,LS) == 0    || strcasecmp(r_name,LS) == 0 ||
                    strcasecmp(r_name,DDISK) == 0  || strcasecmp(r_name,MMBR) == 0 ){
                     o_name = 1;
                 }else{
@@ -1184,7 +1179,7 @@ void analizar_entrada(char *entrada){
                 }
 
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             /*for(;cont1 < contador;cont1++){
                 //printf("    CHAR: %c\n",vect[cont][cont1]);
                 if(cont1 < 5){//NO concat ulitmo "="
@@ -1260,11 +1255,11 @@ void analizar_entrada(char *entrada){
     else if(strcasecmp(MKFS,vect[0]) == 0){
         printf("  \033[%dmFORMATEO DE PARTICION: %s\033[0m\a\n",VERDE,vect[0]);
 
-        char r_path[30], r_type[30], r_id[30], r_unit;
-             r_path[0] = r_type[0] = r_id[0] = '\0';
+        char r_fs[30], r_type[30], r_id[30], r_unit;
+             r_fs[0] = r_type[0] = r_id[0] = '\0';
         int  r_add = 0;
         //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, n_path, n_typ = 0, n_uni = 0, n_add = 0;
+        int o_id = 0, n_fs = 1, n_typ = 0, n_uni = 0, n_add = 0;
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
@@ -1276,30 +1271,30 @@ void analizar_entrada(char *entrada){
                 }
 
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
             //printf("    DATA: %s,\'%s\'\n",compare,final);
-            if(strcasecmp(compare, PATH)==0){
+            if(strcasecmp(compare, FS)==0){
                 //printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
-                            concatenar_char(r_path,final[auxi]);
+                            concatenar_char(r_fs,final[auxi]);
                         }else{
                             break;
                         }
                     }
-                    n_path = 1;
+                    n_fs = 0; //0 = 3xt2, 1 = ext3
                 }else{
-                    strcpy(r_path,final);
-                    n_path = 1;
+                    strcpy(r_fs,final);
+                    n_fs = 0;
                 }
             }else if(strcasecmp(compare, ID)==0 || strcasecmp(compare, NAME)==0){
                 //NAME: indicará el id que se generó con el comando mount de la primera fase
-                //printf("ID/NAME: \'%s\'\n",final);
+                printf("ID: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
@@ -1323,7 +1318,7 @@ void analizar_entrada(char *entrada){
                     }
                 }
             }else if(strcasecmp(compare, TYPE)==0){
-                //printf("TYPE: \'%s\'\n",final);
+                printf("TYPE: \'%s\'\n",final);
                 if(strcasecmp(final, FULL)==0 || strcasecmp(final, FAST)==0){
                     strcpy(r_type,final);
                     //r_type = final[0];
@@ -1335,7 +1330,7 @@ void analizar_entrada(char *entrada){
                     return;
                 }
             }else if(strcasecmp(compare, ADD)==0){
-                //printf("ADD: \'%s\'\n",final);
+                printf("ADD: \'%s\'\n",final);
                 r_add = atoi(final);
                 n_add = 1;
                 /* Verificar si no esta entre comillas */
@@ -1346,7 +1341,7 @@ void analizar_entrada(char *entrada){
                     return;
                 }
             }else if(strcasecmp(compare, UNIT)==0){
-                //printf("UNIT: \'%s\'\n",final);
+                printf("UNIT: \'%s\'\n",final);
                 if(final[0] == 'b' || final[0] == 'B' || final[0] == 'k' || final[0] == 'K' || final[0] == 'm' || final[0] == 'M'){
                     r_unit = final[0];
                     n_uni = 1;
@@ -1389,7 +1384,7 @@ void analizar_entrada(char *entrada){
             //#    formatear_particion(r_id, r_type);
             //mkfs_disco(r_id,r_type,r_add,r_unit);
             //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            //printf("    SUCCESS MKFS: [%s] %d,\'%s\',%s,%c\n",r_path,r_add,r_id,r_type,r_unit);
+            printf("    SUCCESS MKFS: [%s] %d,\'%s\',%s,%c\n",r_fs,r_add,r_id,r_type,r_unit);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
