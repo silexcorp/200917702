@@ -1,4 +1,4 @@
 git status
 git add .
-git commit -m "Primera fase colcuida" -a
+git commit -m "Correcciones minimas" -a
 git push https://github.com/silexCorp/200917702.git

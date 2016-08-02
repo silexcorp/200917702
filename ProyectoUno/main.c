@@ -4,14 +4,14 @@
 #include "data.h"
 
 
-/******************************************
- *                                        *--------------+
- *     FACULTAD DE  INGENIERAIA USAC       *---------+
- *     Primera proyecto - MIA              *------+
- *     Nombre: Marco Aledander Mateo      *-------------+
- *     Carnet: 200917702 Sección: A      *-------------------+
- *     Fase: PRIMERA FASE ROYECTO        *----------------------------+
- *                                        *-------+
+/****************************************++-
+ *                                          *--------------+-
+ *      FACULTAD DE  INGENIERAIA USAC       *---------+-
+ *      Primera proyecto - MIA              *------+-
+ *      Nombre: Marco Aledander Mateo      *-------------+-
+ *      Carnet: 200917702 Sección: A      *-------------------+-
+ *      Fase: PRIMERA FASE PROYECTO       *----------------------------+-
+ *                                         *-------+-
  * ****************************************/
 
 //void inicializar_sistema();
@@ -39,17 +39,6 @@ int main(void){
     /*
      * Ejecutar programa */
     menu_principal();
-
-
-
-
-
-
-
-
-
-
-
 
 
     return 0;

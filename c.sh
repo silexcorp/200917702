@@ -27,6 +27,9 @@ mount -path::/home/archivos/primerpractica/D1.dsk -name::LOG1
 rep -name::disk -path::/home/archivos/primerpractica/reportes/Reporte1Disco2.png -id::vda1
 rep -name::disk -path::/home/archivos/primerpractica/reportes/Reporte1Disco1.png -id::vdb1
 
+rep -name::mbr -path::/home/archivos/primerpractica/reportes/Reporte1MBR2.png -id::vda1
+rep -name::mbr -path::/home/archivos/primerpractica/reportes/Reporte1MBR1.png -id::vdb1
+
 
 #Crea el sistema de archivos LWH en todas las particiones
 mkfs -id::vda1
