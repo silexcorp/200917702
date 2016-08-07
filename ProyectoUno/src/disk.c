@@ -318,39 +318,6 @@ int numero_particiones_primarias(char* dir){
    }
 }
 
- /* Funcion para obtener el numero de particiones */
-int numero_particiones_extendidas(char* dir){
-
-   MBR mbr;
-   int existente = 0;
-   contador_extendidas = 0;
-   FILE *fp;
-
-   fp=fopen(dir,"rb+");
-
-   if(fp!=NULL){
-      fseek(fp,0,SEEK_SET);
-      fread(&mbr,sizeof(MBR),1,fp);
-
-      if(mbr.mbr_partition_1.part_status == '1' && mbr.mbr_partition_1.part_type == 'E'){
-        existente = 1;
-      }else if(mbr.mbr_partition_2.part_status == '1' && mbr.mbr_partition_2.part_type == 'E'){
-        existente = 1;
-      }else if(mbr.mbr_partition_3.part_status == '1' && mbr.mbr_partition_3.part_type == 'E'){
-        existente = 1;
-      }else if(mbr.mbr_partition_4.part_status == '1' && mbr.mbr_partition_4.part_type == 'E'){
-        existente = 1;
-      }else{
-        existente = 0;
-      }
-      contador_extendidas = existente;
-
-      fclose(fp);
-      return existente;
-
-   }
-}
-
 int inicio_particion_extendida(char* dir){
     int inicio = 0;
     MBR mbr;
