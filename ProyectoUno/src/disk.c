@@ -30,35 +30,23 @@ void crear_disco(int size, char unit, char *path, char*name){
     int size_disco = 0;
     buffer[0] = '\0';
 
-    /* Inicilziar valores de MBR */
-    mbr.mbr_partition_1.part_fit = ' ';
-    mbr.mbr_partition_1.part_name[0] = '\0';
-    mbr.mbr_partition_1.part_size = 0;
-    mbr.mbr_partition_1.part_start = 0;
-    mbr.mbr_partition_1.part_status = '0';
-    mbr.mbr_partition_1.part_type = ' ';
-
-    mbr.mbr_partition_2.part_fit = ' ';
-    mbr.mbr_partition_2.part_name[0] = '\0';
-    mbr.mbr_partition_2.part_size = 0;
-    mbr.mbr_partition_2.part_start = 0;
-    mbr.mbr_partition_2.part_status = '0';
-    mbr.mbr_partition_2.part_type = ' ';
-
-    mbr.mbr_partition_3.part_fit = ' ';
-    mbr.mbr_partition_3.part_name[0] = '\0';
-    mbr.mbr_partition_3.part_size = 0;
-    mbr.mbr_partition_3.part_start = 0;
-    mbr.mbr_partition_3.part_status = '0';
-    mbr.mbr_partition_3.part_type = ' ';
-
-    mbr.mbr_partition_4.part_fit = ' ';
-    mbr.mbr_partition_4.part_name[0] = '\0';
-    mbr.mbr_partition_4.part_size = 0;
-    mbr.mbr_partition_4.part_start = 0;
-    mbr.mbr_partition_4.part_status = '0';
-    mbr.mbr_partition_4.part_type = ' ';
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     mbr.mbr_fecha_creacion = get_time();
     mbr.mbr_disk_signature = rand()%1001;
 
