@@ -108,6 +108,14 @@
 #define AVDS    "avds"
 #define LOGG    "log"
 
+/*
+#define S_AVD   "s_avd"
+#define S_DD    "s_dd"
+#define S_TI    "s_ti"
+#define S_BD    "s_sd"
+#define S_LOG   "s_log"
+#define S_SB    "sb"
+*/
 
 /* Script */
 #define EXEC   "exec"
@@ -158,6 +166,36 @@ extern char *get_name(char *disco);
 extern char *get_path(char *disco);
 extern char *get_ext(char *disco);
 extern int get_size(char *informacion);
+
+/*
+char *nueva_cadena;
+char *temporal;
+//char cadena[300] = "vda1 vda2 vda3";
+nueva_cadena = strtok (final,"");
+int esta = 0;
+while (nueva_cadena != NULL){
+    if(1){
+        temporal = strtok(nueva_cadena, " ");
+        if(temporal){
+            // Verifica el primer dato o split/word
+            //printf("        %s\n", temporal);
+            arr[esta] = malloc(sizeof(temporal)+1);
+            strcpy(arr[esta], temporal);esta++;
+        }
+        while(temporal){
+            temporal = strtok(NULL, " ");
+            if(temporal){
+                //printf("        %s\n",temporal);
+                arr[esta] = malloc(sizeof(temporal)+1);
+                strcpy(arr[esta], temporal);esta++;
+            }else{
+                break;
+            }
+        }
+    }
+    nueva_cadena = strtok (NULL, "");
+}*/
+
 
 
 #endif // DATA_H

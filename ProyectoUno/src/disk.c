@@ -30,23 +30,35 @@ void crear_disco(int size, char unit, char *path, char*name){
     int size_disco = 0;
     buffer[0] = '\0';
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    /* Inicilziar valores de MBR */
+    mbr.mbr_partition_1.part_fit = ' ';
+    mbr.mbr_partition_1.part_name[0] = '\0';
+    mbr.mbr_partition_1.part_size = 0;
+    mbr.mbr_partition_1.part_start = 0;
+    mbr.mbr_partition_1.part_status = '0';
+    mbr.mbr_partition_1.part_type = ' ';
+
+    mbr.mbr_partition_2.part_fit = ' ';
+    mbr.mbr_partition_2.part_name[0] = '\0';
+    mbr.mbr_partition_2.part_size = 0;
+    mbr.mbr_partition_2.part_start = 0;
+    mbr.mbr_partition_2.part_status = '0';
+    mbr.mbr_partition_2.part_type = ' ';
+
+    mbr.mbr_partition_3.part_fit = ' ';
+    mbr.mbr_partition_3.part_name[0] = '\0';
+    mbr.mbr_partition_3.part_size = 0;
+    mbr.mbr_partition_3.part_start = 0;
+    mbr.mbr_partition_3.part_status = '0';
+    mbr.mbr_partition_3.part_type = ' ';
+
+    mbr.mbr_partition_4.part_fit = ' ';
+    mbr.mbr_partition_4.part_name[0] = '\0';
+    mbr.mbr_partition_4.part_size = 0;
+    mbr.mbr_partition_4.part_start = 0;
+    mbr.mbr_partition_4.part_status = '0';
+    mbr.mbr_partition_4.part_type = ' ';
+
     mbr.mbr_fecha_creacion = get_time();
     mbr.mbr_disk_signature = rand()%1001;
 
@@ -303,6 +315,39 @@ int numero_particiones_primarias(char* dir){
       }
       fclose(fp);
       return contador;
+   }
+}
+
+ /* Funcion para obtener el numero de particiones */
+int numero_particiones_extendidas(char* dir){
+
+   MBR mbr;
+   int existente = 0;
+   contador_extendidas = 0;
+   FILE *fp;
+
+   fp=fopen(dir,"rb+");
+
+   if(fp!=NULL){
+      fseek(fp,0,SEEK_SET);
+      fread(&mbr,sizeof(MBR),1,fp);
+
+      if(mbr.mbr_partition_1.part_status == '1' && mbr.mbr_partition_1.part_type == 'E'){
+        existente = 1;
+      }else if(mbr.mbr_partition_2.part_status == '1' && mbr.mbr_partition_2.part_type == 'E'){
+        existente = 1;
+      }else if(mbr.mbr_partition_3.part_status == '1' && mbr.mbr_partition_3.part_type == 'E'){
+        existente = 1;
+      }else if(mbr.mbr_partition_4.part_status == '1' && mbr.mbr_partition_4.part_type == 'E'){
+        existente = 1;
+      }else{
+        existente = 0;
+      }
+      contador_extendidas = existente;
+
+      fclose(fp);
+      return existente;
+
    }
 }
 
