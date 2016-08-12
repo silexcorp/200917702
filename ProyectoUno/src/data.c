@@ -1118,9 +1118,9 @@ void analizar_entrada(char *entrada){
             /* Mandar a CREAR PARTICION en disco */
 
             //printf("PATHOOOOOO: %s\n", r_path);
-            char *pa;pa = malloc(sizeof(r_path));strcpy(pa,get_path(r_path));
+            //char *pa;pa = malloc(sizeof(r_path));strcpy(pa,get_path(r_path));
             //printf("PATHHHHHHH: %s\n", pa);
-            crear_carpeta(pa);
+            //crear_carpeta(pa);
             //char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));
             //char *ex;ex = malloc(sizeof(100));strcpy(ex,get_ext(r_path));
             if(strcasecmp(r_name,DDISK)==0){
