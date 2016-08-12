@@ -2997,6 +2997,21 @@ void quitar_espacio(char s[], char c){
         s[j++] = s[i];
     s[j] = '\0';
 }
+
+void quitar_espacios_en_blanco(char s[], char c){
+    unsigned int i, j;
+    for(i = j = 0; s[i] != '\0'; i++)
+       if(s[i] != ' '){
+            s[j++] = s[i];
+            //printf("CHAR: %c\n",s[i]);
+       }else{
+            s[j++] = '_';
+            //printf("CHAR: %c\n",s[i]);
+       }
+    s[j] = '\0';
+}
+
+
 int comparar(char *a,char *b){
 
     int aa = strlen(a);

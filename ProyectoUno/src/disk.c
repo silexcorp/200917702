@@ -1249,6 +1249,11 @@ void Reporte_MBR_DOT(char reporte[],char img_path[]){
      FILE* fp = fopen ( "/home/lex/grafo.dot", "w" );
      char concatenar[1000];
      char aux[1000];
+
+     //Quitar espacio del nombmre y reemplazarlo con '_'
+     quitar_espacios_en_blanco(img_path,'_');
+
+
      strcpy(aux,img_path);
      strcpy(concatenar,"dot -Tpng /home/lex/grafo.dot -o ");
      strcat(concatenar,aux);
@@ -1416,9 +1421,12 @@ void Generar_Imagen_MBR(char* path, char path_img[]){
 
 void Reporte_Disco_DOT(char reporte[],char img_path[]){
 
-     FILE* fp = fopen ( "/home/lex/grafo2.dot", "w" );
+     FILE* fp = fopen ("/home/lex/grafo2.dot", "w");
      char concatenar[1000];
      char aux[1000];
+
+     //Quitar espacio del nombmre y reemplazarlo con '_'
+     quitar_espacios_en_blanco(img_path,'_');
 
      strcpy(aux,img_path);
      strcpy(concatenar,"dot -Tpng /home/lex/grafo2.dot -o ");
