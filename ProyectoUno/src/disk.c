@@ -1246,16 +1246,45 @@ void Generar_EBR(char* dir,int posicion){
 
 void Reporte_MBR_DOT(char reporte[],char img_path[]){
 
-     FILE* fp = fopen ( "/home/lex/grafo.dot", "w" );
+     FILE* fp = fopen ( "/home/lex/grafombr.dot", "w" );
      char concatenar[1000];
      char aux[1000];
 
-     //Quitar espacio del nombmre y reemplazarlo con '_'
-     quitar_espacios_en_blanco(img_path,'_');
+     char pa[400];pa[0]='\0';strcpy(pa,get_path(img_path));     //puts("PAT");puts(pa);
+     char na[400];na[0]='\0';
+     quitar_espacios_en_blanco(pa,'_');
+     int a = get_size(pa);
+     //crear_carpeta(pa);
+     for(;a<get_size(img_path);a++){
+         if(img_path[a]== ' '){
+            concatenar_char(na,'_');
+         }else{
+            concatenar_char(na,img_path[a]);
+         }
+     }
+     crear_carpeta("/home/archivos/reporte/");
+     establecer_nombre_dot("/home/archivos/reporte/",na);
+     strcpy(aux,ubicacion_archivo);
 
+     /*strcpy(concatenar,"dot -Tpng /home/lex/grafo.dot -o ");
+     strcat(concatenar,aux);
 
-     strcpy(aux,img_path);
-     strcpy(concatenar,"dot -Tpng /home/lex/grafo.dot -o ");
+     char pa[400];pa[0]='\0';strcpy(pa,get_path(img_path));     //puts("PAT");puts(pa);
+     char na[400];na[0]='\0';
+     quitar_espacios_en_blanco(pa,'_');
+     int a = get_size(pa);
+     crear_carpeta(pa);
+     for(;a<get_size(img_path);a++){
+         if(img_path[a]== ' '){
+            concatenar_char(na,'_');
+         }else{
+            concatenar_char(na,img_path[a]);
+         }
+     }
+     establecer_nombre_dot(pa,na);
+     strcpy(aux,ubicacion_archivo);*/
+
+     strcpy(concatenar,"dot -Tpng /home/lex/grafombr.dot -o ");
      strcat(concatenar,aux);
 
      fprintf(fp,"digraph hola{");
@@ -1421,15 +1450,27 @@ void Generar_Imagen_MBR(char* path, char path_img[]){
 
 void Reporte_Disco_DOT(char reporte[],char img_path[]){
 
-     FILE* fp = fopen ("/home/lex/grafo2.dot", "w");
+     FILE* fp = fopen ("/home/lex/grafodisc.dot", "w");
      char concatenar[1000];
      char aux[1000];
 
-     //Quitar espacio del nombmre y reemplazarlo con '_'
-     quitar_espacios_en_blanco(img_path,'_');
+     char pa[400];pa[0]='\0';strcpy(pa,get_path(img_path));     //puts("PAT");puts(pa);
+     char na[400];na[0]='\0';
+     quitar_espacios_en_blanco(pa,'_');
+     int a = get_size(pa);
+     //crear_carpeta(pa);
+     for(;a<get_size(img_path);a++){
+         if(img_path[a]== ' '){
+            concatenar_char(na,'_');
+         }else{
+            concatenar_char(na,img_path[a]);
+         }
+     }
+     crear_carpeta("/home/archivos/reporte/");
+     establecer_nombre_dot("/home/archivos/reporte/",na);
+     strcpy(aux,ubicacion_archivo);
 
-     strcpy(aux,img_path);
-     strcpy(concatenar,"dot -Tpng /home/lex/grafo2.dot -o ");
+     strcpy(concatenar,"dot -Tpng /home/lex/grafodisc.dot -o ");
      strcat(concatenar,aux);
 
      fprintf(fp,"digraph structs{");

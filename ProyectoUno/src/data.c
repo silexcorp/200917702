@@ -541,12 +541,13 @@ void analizar_entrada(char *entrada){
                     return;
                 }
             }else if(strcasecmp(compare, NAME)==0){
-                //printf("NAME: \'%s\'\n",final);
+                printf("NAME: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
                             concatenar_char(r_name,final[auxi]);
+                            //quitar_espacios_en_blanco(r_name,'_');
                         }else{
                             break;
                         }
@@ -3160,7 +3161,17 @@ void establecer_nombre(char *path,char *nombre){
     strcat(ubicacion_archivo, ".dsk"); /* add the extension */
 
 }
+/*
+ * Establecer archivo con directorio y extensión */
+void establecer_nombre_dot(char *path,char *nombre){
+    //ubicacion_archivo[0] = '\0';
+    /* make space for the new string (should check the return value ...) */
+    ubicacion_archivo = malloc(get_size(path)+get_size(nombre)+4);
+    strcpy(ubicacion_archivo, path);   /* copy name into the new var */
+    strcat(ubicacion_archivo, nombre); /* add the name */
+    //strcat(ubicacion_archivo, ".dsk"); /* add the extension */
 
+}
 int get_size(char *informacion){
     int i=0;
     while((informacion[i]!=0) && (informacion[i]!=127))
@@ -3237,7 +3248,7 @@ char *get_name(char *disco){
                 char *temp = strtok(nombre_disco[e-1], ".");
                 if(temp){
                     strcpy(r_name, temp);                       //Guardar NOMBRE
-                    //printf("    Nombre: %s\n", r_name);
+                    printf("    Nombre: %s\n", r_name);
                 }a++;temporal = strtok(NULL, ".");
             }
 
@@ -3346,6 +3357,6 @@ char *get_ext(char *disco){
         nueva_cadena = strtok (NULL, "\"");
     }
 
-    return temporal;
+    return r_name;
 
 }
