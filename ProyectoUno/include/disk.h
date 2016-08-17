@@ -54,6 +54,7 @@ typedef struct{
 }MONTAJE;
 
 MONTAJE particiones_montadas[100];
+MONTAJE particiones_desmontadas[100];
 typedef struct DISK DISK;
 typedef struct MBR MBR;
 typedef struct EBR EBR;

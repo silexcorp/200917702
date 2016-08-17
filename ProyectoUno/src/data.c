@@ -722,13 +722,15 @@ void analizar_entrada(char *entrada){
         /* Verifica parámetros obligatorios para CREAR */
         if(o_path == 1 && o_na == 1){
             /* Mandar a MONTAR particion */
-            char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));//pa=get_path(r_path);
-            char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));//pa=get_name(r_path);
+            //char *pa;pa = malloc(sizeof(400));strcpy(pa,get_path(r_path));//pa=get_path(r_path);
+            //char *na;na = malloc(sizeof(100));strcpy(na,get_name(r_path));//pa=get_name(r_path);
             exe(r_path,"montando partición");
             montar_particion(r_path,r_name);
             //printf("DATA path: \'%s\' name: \'%s\'\n",pa,na);
         }else{
-            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            inf("   PARTICIONES MONTADAS");
+            mostrar_particiones_montadas();
+            //printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
@@ -809,7 +811,9 @@ void analizar_entrada(char *entrada){
             //inf("particion desmontada exitosamente");
             //printf("    SUCCESS UNMOUNT: \'%s\'\n",r_id);
         }else{
-            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            inf("   PARTICIONES DESMONTADAS");
+            mostrar_particiones_desmontadas();
+            //printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }

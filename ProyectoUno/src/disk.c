@@ -1032,8 +1032,22 @@ void montar_particion(char path[], char name[]){
     }else{
        montar_particion_Logica(path,name);
     }
-
 }
+
+void mostrar_particiones_montadas(){
+    int i;
+    for(i = 0; i<part_mont; i++){
+     printf("\n     MONTADOS: %s %s %s",particiones_montadas[i].path,particiones_montadas[i].id,particiones_montadas[i].name);
+    }
+}
+
+void mostrar_particiones_desmontadas(){
+    int i;
+    for(i = 0; i<part_mont; i++){
+     printf("\n     DESMONTADOS: %s %s %s",particiones_desmontadas[i].path,particiones_desmontadas[i].id,particiones_desmontadas[i].name);
+    }
+}
+
 
 void montar_particion_Logica(char* dir,char name[]){
      existencia_particion_logica(dir,name,inicio_particion_extendida(dir));
@@ -1109,7 +1123,6 @@ void montar_particion_Memoria(char* dir, char name[]){
         contador_montadas++;
         exe(name,"particion monatada");//dir,name,in.id);
      for(i = 0; i<part_mont; i++){
-
          printf("\n     MONTADO: %s %s %s",particiones_montadas[i].path,particiones_montadas[i].id,particiones_montadas[i].name);
 
      }
@@ -1127,9 +1140,15 @@ void desmontar_particion(char id[]){
     for(i = 0;i<100;i++){
         if(strcasecmp(particiones_montadas[i].id,id) == 0){
             exe(particiones_montadas[i].name, "particion desmonatada");
-           //printf("\nParticion Desmontada %s %s con ID %s",particiones_montadas[i].name,particiones_montadas[i].path,id);
-           particiones_montadas[i] = limpiar;
-           existe = 1;
+            printf("\n  Particion Desmontada %s %s con ID %s",particiones_montadas[i].name,particiones_montadas[i].path,id);
+            strcpy(particiones_desmontadas[i].name , particiones_montadas[i].name);
+            strcpy(particiones_desmontadas[i].path , particiones_montadas[i].path);
+            strcpy(particiones_desmontadas[i].id , particiones_montadas[i].id);
+            strcpy(particiones_desmontadas[i].numero , particiones_montadas[i].numero);
+            strcpy(particiones_desmontadas[i].letra , particiones_montadas[i].letra);
+            //particiones_desmontadas[i] = particiones_montadas[i];
+            particiones_montadas[i] = limpiar;
+            existe = 1;
         }else{
             //printf("\n SSSSSS: %s  %d",id, strlen(id));
         }
@@ -1246,7 +1265,7 @@ void Generar_EBR(char* dir,int posicion){
 
 void Reporte_MBR_DOT(char reporte[],char img_path[]){
 
-     FILE* fp = fopen ( "/home/lex/grafombr.dot", "w" );
+     FILE* fp = fopen ( "/home/lex/grafo_mbr.dot", "w" );
      char concatenar[1000];
      char aux[1000];
 
@@ -1284,7 +1303,7 @@ void Reporte_MBR_DOT(char reporte[],char img_path[]){
      establecer_nombre_dot(pa,na);
      strcpy(aux,ubicacion_archivo);*/
 
-     strcpy(concatenar,"dot -Tpng /home/lex/grafombr.dot -o ");
+     strcpy(concatenar,"dot -Tpng /home/lex/grafo_mbr.dot -o ");
      strcat(concatenar,aux);
 
      fprintf(fp,"digraph hola{");
@@ -1295,14 +1314,14 @@ void Reporte_MBR_DOT(char reporte[],char img_path[]){
      fclose(fp);
      system(concatenar);
 
-     memset(reporte_mbr1,'\0',1000);
-     memset(reporte_mbr2,'\0',1000);
-     memset(reporte_mbr3,'\0',1000);
-     memset(reporte_mbr4,'\0',1000);
-     memset(reporte_mbr5,'\0',1000);
-     memset(reporte_ebr,'\0',1000);
-     memset(reporte_ebr2,'\0',1000);
-     memset(reporte_ebr3,'\0',1000);
+     memset(reporte_mbr1,'\0',10000);
+     memset(reporte_mbr2,'\0',10000);
+     memset(reporte_mbr3,'\0',10000);
+     memset(reporte_mbr4,'\0',10000);
+     memset(reporte_mbr5,'\0',10000);
+     memset(reporte_ebr,'\0',10000);
+     memset(reporte_ebr2,'\0',10000);
+     memset(reporte_ebr3,'\0',10000);
 }
 
 void Reporte_Disco(char id[],char path_img[],char name[]){
@@ -1450,7 +1469,7 @@ void Generar_Imagen_MBR(char* path, char path_img[]){
 
 void Reporte_Disco_DOT(char reporte[],char img_path[]){
 
-     FILE* fp = fopen ("/home/lex/grafodisc.dot", "w");
+     FILE* fp = fopen ("/home/lex/grafo_disc.dot", "w");
      char concatenar[1000];
      char aux[1000];
 
@@ -1470,7 +1489,7 @@ void Reporte_Disco_DOT(char reporte[],char img_path[]){
      establecer_nombre_dot("/home/archivos/reporte/",na);
      strcpy(aux,ubicacion_archivo);
 
-     strcpy(concatenar,"dot -Tpng /home/lex/grafodisc.dot -o ");
+     strcpy(concatenar,"dot -Tpng /home/lex/grafo_disc.dot -o ");
      strcat(concatenar,aux);
 
      fprintf(fp,"digraph structs{");

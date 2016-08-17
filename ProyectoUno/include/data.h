@@ -147,12 +147,13 @@ extern int verificar_carpeta(char *carpeta);
 extern int existe_archivo(char* file);
 extern void analizar_entrada(char *entrada);
 extern void establecer_nombre(char *path,char *nombre);
-extern void establecer_nombre(char *path,char *nombre);
+extern void establecer_nombre_dot(char *path,char *nombre);
 extern void establecer_destino(char *path,char *nombre, char *ext);
 extern time_t get_time();
 extern void set_time(time_t t);
 extern void settime();
 extern void quitar_espacio(char s[], char c);
+extern void quitar_espacios_en_blanco(char s[], char c);
 extern int convert(char *num);
 
 extern void login_system(char *r_usr, char *r_pwd);

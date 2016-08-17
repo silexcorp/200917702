@@ -36,19 +36,19 @@ int contar_ebr;
 
 
 char reporte_mbr1[5000];
-char reporte_mbr2[1000];
-char reporte_mbr3[1000];
-char reporte_mbr4[1000];
-char reporte_mbr5[1000];
-char reporte_ebr[1000];
-char reporte_ebr2[1000];
-char reporte_ebr3[1000];
+char reporte_mbr2[10000];
+char reporte_mbr3[10000];
+char reporte_mbr4[10000];
+char reporte_mbr5[10000];
+char reporte_ebr[10000];
+char reporte_ebr2[10000];
+char reporte_ebr3[10000];
 
-char reporte_disco[1000];
-char reporte_disco2[1000];
-char reporte_disco3[1000];
-char reporte_disco4[1000];
-char reporte_disco5[5000];
+char reporte_disco[10000];
+char reporte_disco2[10000];
+char reporte_disco3[10000];
+char reporte_disco4[10000];
+char reporte_disco5[50000];
 
 
 char id_[10];
