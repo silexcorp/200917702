@@ -161,7 +161,6 @@ void analizar_entrada(char *entrada){
     int cont = 0, cont1 = 1, tamanio = get_size(entrada), esta = 0, param = 0;
     char temp[600];temp[0] = '\0';
     char *vect[100];
-
     char cmd[600]; cmd[0] = '\0';
     strcpy(cmd,entrada);
     int evitar_espacios = 1;
@@ -190,13 +189,11 @@ void analizar_entrada(char *entrada){
                 if(cmd[cont] == '"')param = 0;//puts("Encontro una comilla");
                 concatenar_char(temp,cmd[cont]);
             }
-
         }else{
             vect[esta]  = malloc(sizeof(temp)+1);
             strcpy(vect[esta], temp);
             esta++;evitar_espacios = 1;
         }
-
     }
 
     /* Quitar los espacios en la palabra que describe el PROCESO */
@@ -326,7 +323,6 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
     /*
      * Analiza el comando para REMOVER disco */
     else if(strcasecmp(RMDISK,vect[0]) == 0){
@@ -439,6 +435,7 @@ void analizar_entrada(char *entrada){
             int tama = get_size(vect[cont]), contador = 0;
             //printf("TAM: %d\n", tama);
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -636,7 +633,6 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
     /*
      * Analiza el comando para MONTAR disco */
     else if(strcasecmp(MOUNT,vect[0]) == 0){
@@ -649,6 +645,7 @@ void analizar_entrada(char *entrada){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -735,7 +732,6 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
     /*
      * Analiza el comando para DESMONTAR disco */
     else if(strcasecmp(UMOUNT,vect[0]) == 0){
@@ -749,6 +745,7 @@ void analizar_entrada(char *entrada){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -863,7 +860,6 @@ void analizar_entrada(char *entrada){
             return;
         }
     }
-
 
     /*
      * Analiza el comando para DISK USED */
@@ -998,6 +994,7 @@ void analizar_entrada(char *entrada){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -1166,7 +1163,6 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
     /*
      * Analiza el comando para EJECUTAR script */
     else if(strcasecmp(EXEC,vect[0]) == 0){
@@ -1179,6 +1175,7 @@ void analizar_entrada(char *entrada){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y ':' ejemplo: - 'size' :
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -1248,17 +1245,11 @@ void analizar_entrada(char *entrada){
 
 
 
-
-
-
-
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    AREA DE VERIFICACIÓN DE COMANDOS
     /*
      * Area de analisis y descomposicion de las entradas */
     /*
-     * Analizador de la SEGUNDA FASE con los siguientes parametros
-     * MKFS - "mkfs"
-     */
+     * Analizador de la SEGUNDA FASE con los siguientes parametros */
     else if(strcasecmp(MKFS,vect[0]) == 0){
         printf("  \033[%dmFORMATEO DE PARTICION: %s\033[0m\a\n",VERDE,vect[0]);
 
@@ -1271,6 +1262,7 @@ void analizar_entrada(char *entrada){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
@@ -1398,6 +1390,769 @@ void analizar_entrada(char *entrada){
         }
     }
 
+    /*
+     * Analizador de la SEGUNDA FASE con LOGIN */
+    else if(strcasecmp(LOGIN,vect[0]) == 0){
+        printf("  \033[%dmINICIAR SESION: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_usr[300], r_pwd[300];
+             r_usr[0] =  r_pwd[0] = '\0';
+        int  o_usr = 0, o_pwd = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, USR)==0){
+                //USR: indicará el id que se generó con el comando mount de la primera fase
+                printf("USR: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_usr,final[auxi]);
+                        }else{
+                            o_usr = 1;
+                            break;
+                        }
+                    }
+                    o_usr = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_usr,final);
+                        o_usr = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, PWD)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("PWD: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_pwd,final[auxi]);
+                        }else{
+                            o_pwd = 1;
+                            break;
+                        }
+                    }
+                    o_pwd = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_pwd,final);
+                        o_pwd = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_usr == 1 && o_pwd == 1){
+            if(get_size(r_usr) < 10 && get_size(r_pwd) < 10 ){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    LOGIN SUCCESS: [%s] %s\n",r_usr,r_pwd);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analizador de la SEGUNDA FASE con LOGOUT */
+    else if(strcasecmp(LOGOUT,vect[0]) == 0){
+        printf("  \033[%dmCERRAR SESION: %s\033[0m\a\n",VERDE,vect[0]);
+        int o_login = 1;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_login == 1){
+            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+            printf("    LOGIN SUCCESS: :)\n");
+        }else{
+            printf("                    \033[%dmErr: \033[%dmcesión iniciada: \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analizador de la SEGUNDA FASE con MKGRP */
+    else if(strcasecmp(MKGRP,vect[0]) == 0){
+        printf("  \033[%dmCREAR GRUPO: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_name[300], r_id[300];
+             r_name[0] =  r_id[0] = '\0';
+        int  o_name = 0, o_id = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, NAME)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("NAME: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_name,final[auxi]);
+                        }else{
+                            o_name = 1;
+                            break;
+                        }
+                    }
+                    o_name = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_name,final);
+                        o_name = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_id == 1 && o_name == 1){
+            if(get_size(r_id) < 10 && get_size(r_name) < 10 ){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    MAKE GROUP SUCCESS: [%s] %s\n",r_id,r_name);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analizador de la SEGUNDA FASE con MKGRP */
+    else if(strcasecmp(RMGRP,vect[0]) == 0){
+        printf("  \033[%dmREMOVER GRUPO: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_name[300], r_id[300];
+             r_name[0] =  r_id[0] = '\0';
+        int  o_name = 0, o_id = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, NAME)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("NAME: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_name,final[auxi]);
+                        }else{
+                            o_name = 1;
+                            break;
+                        }
+                    }
+                    o_name = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_name,final);
+                        o_name = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_id == 1 && o_name == 1){
+            if(get_size(r_id) < 10 && get_size(r_name) < 10 ){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    GROUP REMOVED SUCCESS: [%s] %s\n",r_id,r_name);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
+
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analizador de la SEGUNDA FASE con MKUSR */
+    else if(strcasecmp(MKUSR,vect[0]) == 0){
+        printf("  \033[%dmCREAR USUARIO: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_usr[300], r_id[300], r_pwd[300], r_grp[300];
+             r_usr[0] =  r_id[0] =  r_pwd[0] =  r_grp[0] = '\0';
+        int  o_usr = 0,  o_id = 0,  o_pwd = 0,  o_grp = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, USR)==0){
+                //USR: indicará el id que se generó con el comando mount de la primera fase
+                printf("USR: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_usr,final[auxi]);
+                        }else{
+                            o_usr = 1;
+                            break;
+                        }
+                    }
+                    o_usr = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_usr,final);
+                        o_usr = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, PWD)==0){
+                //PWD: indicará el id que se generó con el comando mount de la primera fase
+                printf("PWD: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_pwd,final[auxi]);
+                        }else{
+                            o_pwd = 1;
+                            break;
+                        }
+                    }
+                    o_pwd = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_pwd,final);
+                        o_pwd = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, GRP)==0){
+                //GRP: indicará el id que se generó con el comando mount de la primera fase
+                printf("GRP: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_grp,final[auxi]);
+                        }else{
+                            o_grp = 1;
+                            break;
+                        }
+                    }
+                    o_grp = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_grp,final);
+                        o_grp = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_usr == 1 && o_id == 1 && o_pwd == 1 && o_grp == 1){
+            if(get_size(r_usr) < 10 && get_size(r_id) < 10 && get_size(r_pwd) < 10 && get_size(r_grp) < 10){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    USER CREATED: [%s] %s\n",r_id,r_usr);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analizador de la SEGUNDA FASE con MKUSR */
+    else if(strcasecmp(RMUSR,vect[0]) == 0){
+        printf("  \033[%dmCREAR USUARIO: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_usr[300], r_id[300];
+             r_usr[0] =  r_id[0] = '\0';
+        int  o_usr = 0,  o_id = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, USR)==0){
+                //USR: indicará el id que se generó con el comando mount de la primera fase
+                printf("USR: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_usr,final[auxi]);
+                        }else{
+                            o_usr = 1;
+                            break;
+                        }
+                    }
+                    o_usr = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_usr,final);
+                        o_usr = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
+
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_usr == 1 && o_id == 1){
+            if(get_size(r_usr) < 10 && get_size(r_id)){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    USER DELETED: [%s] %s\n",r_id,r_usr);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analiza el comando para PERMISOS */
+    else if(strcasecmp(CHMOD,vect[0]) == 0){
+        char r_path[200]; r_path[0] = '\0';
+        char r_id[200]; r_id[0] = '\0';
+        int r_ugo = 0, o_ugo = 0, o_id = 0, o_path = 0, r_rec = 0;
+        printf("  \033[%dmPERMISOS: %s\033[0m\a\n",VERDE,vect[0]);
+        //Para verificar si se ingresaron los parametros obligatorios
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                //printf("CHAR: %c\n",vect[cont][cont1]);
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    //printf("CHAR: %d,%c\n",cont1,vect[cont][cont1]);
+                    /*if(vect[cont][1] != 'R' || vect[cont][1] != 'r'){
+                        //printf(" COMP: %c,%c\n",vect[cont][1],vect[cont][cont1]);
+                        if(((vect[cont][cont1] == 'h' ) ||
+                            (vect[cont][cont1] == 'H' )) && car == 0){
+                            r_rec = 1;
+                            //cont1++;contador++;
+                            break;
+                        }
+                    }*/
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA(: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, PATH)==0){
+                //printf("PATH: \'%s\'\n",final);
+                // Verificar si no esta entre comillas //
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_path,final[auxi]);
+                        }else{
+                            break;
+                        }
+                    }
+                    o_path = 1;
+                }else{
+                    strcpy(r_path,final);
+                    o_path = 1;
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //printf("ID: \'%s\'\n",final);
+                // Verificar si no esta entre comillas //
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_path,final[auxi]);
+                        }else{
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    strcpy(r_id,final);
+                    o_id = 1;
+                }
+            }else if(strcasecmp(compare, UGO)==0){
+                printf("UGO: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] >= 48 && final[0] <= 55 && final[1] >= 48 && final[1] <= 55 && final[2] >= 48 && final[2] <= 55){
+                    r_ugo = atoi(final);
+                    o_ugo = 1;
+                    if(r_ugo < 0){
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" se agrega un negativo!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, "R")==0){
+                printf("R: \'%s\'\n",final);
+                r_rec = 1;
+                /*if(atoi(final) > 0){
+                    r_size = atoi(final);
+                     o_n = 1;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\", \'%s\' tamaño incompatible, debe ser mayor que 0\033[0m\n" ,ROJO,MAGENTA,SIZE,final);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }*/
+            }else{
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+        }
+
+        /* Verifica parámetros obligatorios */
+        if(o_ugo == 1 && o_id == 1 && o_path == 1){
+            printf("  Final Ok, R: %d, Path: %s, Id: %s, Ugo: %d\n",r_rec, r_path, r_id, r_ugo);
+            //#    crear_disco(r_size,r_unit,pa,na);
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
 
     /*
      * Analiza el comando MKFILE para crear archivos */
@@ -1417,7 +2172,7 @@ void analizar_entrada(char *entrada){
                 if(vect[cont][cont1] == 'p' || vect[cont][cont1] == 'P'){
                     if(vect[cont][cont1+1] != 'a' || vect[cont][cont1+1] != 'A'){
                         while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-
+                            if(vect[cont][cont1] == 0){break;}
                             if(vect[cont][cont1] != ':' ){
                                 //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
                                 concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
@@ -1425,22 +2180,22 @@ void analizar_entrada(char *entrada){
                                 break;
                             }
                         }//Despues concatena el atributo
-                        contador++;contador++;cont1++;
-                    }else if(vect[cont][cont1+1] == '='){
+                        contador++;contador++;cont1++;cont1++;
+                    }else if(vect[cont][cont1+1] == ':'){
                         printf("                    \033[%dmErr: \033[%dmen parametro \"%c\" no debe tener ningun valor\033[0m\n" ,ROJO,MAGENTA,'P');
                         final[0] = compare[0] = '\0';
                         return;
                     }
                 }else{
                     while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-                        if(vect[cont][cont1] != ':' ){
+                        if(vect[cont][cont1] != ':'){
                             //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
                             concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                         }else{
                             break;
                         }
                     }//Despues concatena el atributo
-                    contador++;contador++;cont1++;
+                    contador++;contador++;cont1++;cont1++;
                 }
             }else if(get_size(vect[cont]) == cont1+1){
                 if(vect[cont][cont1] == 'p' || vect[cont][cont1] == 'P'){
@@ -1568,139 +2323,36 @@ void analizar_entrada(char *entrada){
         }
     }
 
-
     /*
      * Analiza el comando CAT para mostrar contenido de archivo */
     else if(strcasecmp(CAT,vect[0]) == 0){
 
         printf("  \033[%dmMOSTRAR CONTENIDO ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200];
+        char r_id[10], *r_path[200];
              r_id[0] = r_path[0] = '\0';
         //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0;
-
+        int o_id = 0, o_path = 0, contact = 0;
+        char* substr = malloc(sizeof(char)*5+1);
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
                     break;
                 }
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
             /*for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }*/
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, PATH)==0){
-                //printf("PATH: \'%s\'\n",final);
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            concatenar_char(r_path,final[auxi]);
-                        }else{
-                            break;
-                        }
-                    }
-                    o_path = 1;
-                }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
-                }
-            }else{
-                //puts("Entra y truena");
-                if(compare[0] == 0){
-                    //Ignorara
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    //return;
-                }else{
-                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    return;
-                }
-            }
-            final[0] = compare[0] = '\0';
-            tama = 0;cont1 = 1; //Reinicializar parámetros
-            //printf("    PARAMETROS: %s\n",vect[cont]);
-        }
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC:\'%s\', \'%s\'\n", r_id, r_path);
-        }else{
-            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
-            return;
-        }
-    }
-
-
-
-
-
-    /*
-     * Analiza el comando REM para eliminar archivo o carpeta */
-    else if(strcasecmp(REM,vect[0]) == 0){
-
-        printf("  \033[%dmELIMINAR CONTENIDO ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200];
-             r_id[0] = r_path[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0;
-
-        for(cont = 1;cont < esta;cont++){
-            char compare[200], final[400];compare[0] = final[0] = '\0';
-            int tama = get_size(vect[cont]), contador = 0;
-            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-                if(vect[cont][cont1] != ':'){
-                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
-                }else{
-                    break;
-                }
-            }//Despues concatena el atributo
-            contador++;contador++;cont1++;
-            for(;cont1 < tama;cont1++){
-                concatenar_char(final,vect[cont][cont1]);
-            }
-            /*for(;cont1 < tama;cont1++){
-                concatenar_char(final,vect[cont][cont1]);
-            }*/
+            strncpy(substr, compare, 4);
+            printf("SUB STRING: \'%s\'\n",substr);
             if(strcasecmp(compare, ID)==0){
                 printf("ID: \'%s\'\n",final);
                 int exceso = 0;
@@ -1731,20 +2383,24 @@ void analizar_entrada(char *entrada){
                         return;
                     }
                 }
-            }else if(strcasecmp(compare, PATH)==0){
-                printf("PATH: \'%s\'\n",final);
+            }else if(strcasecmp(substr, FFILE)==0){
+                printf("FILE: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
+                r_path[contact] = malloc(sizeof(final)+1);
+                substr[0] = '\0';int val = 0;
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
-                            concatenar_char(r_path,final[auxi]);
+                            concatenar_char(r_path[contact][val],final[auxi]);val++;
                         }else{
                             break;
                         }
                     }
-                    o_path = 1;
+                    o_path = 1;contact++;
                 }else{
-                    strcpy(r_path,final);
+
+                    strcpy(r_path[contact],final);
+                    contact++;
                     o_path = 1;
                 }
             }else{
@@ -1768,44 +2424,73 @@ void analizar_entrada(char *entrada){
         /* Verifica parámetros obligatorios para REMOVER */
         if(o_id == 1 && o_path == 1){
             //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC:\'%s\', \'%s\'\n", r_id, r_path);
+            for(cont=0; cont < contact; cont++){
+                printf("    SUCCESS EXEC:\'%s\', \'%s\'\n", r_id, r_path[cont]);
+            }
+
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
 
-
-
-
-
-
     /*
-     * Analiza el comando EDIT para editar archivo o carpeta */
-    else if(strcasecmp(EDIT,vect[0]) == 0){
-
-        printf("  \033[%dmELIMINAR CONTENIDO ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_cont[200];
-             r_id[0] = r_path[0] =  r_cont[0] = '\0';
+     * Analiza el comando REM para eliminar archivo o carpeta */
+    else if(strcasecmp(RM,vect[0]) == 0){
+        printf("  \033[%dmELIMINAR ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
+        char r_id[10], r_path[200];
+             r_id[0] = r_path[0] = '\0';
         //Para verificar si se ingresaron los parametros obligatorios
-        int r_size = 0, o_id = 0, o_path = 0, n_size = 0, n_cont = 0;
+        int r_rf = 0, o_id = 0, o_path = 0;
+
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
-            int tama = get_size(vect[cont]), contador = 0;
-            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-                if(vect[cont][cont1] != ':'){
-                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+            int tama = get_size(vect[cont]), contador = 0, aux = 0;
+            //printf("Tam: %s - %d,%d\n",vect[cont],get_size(vect[cont]), cont1+1);
+            if(get_size(vect[cont]) > cont1+2){
+                if(vect[cont][cont1] == 'r' || vect[cont][cont1] == 'R'){
+                    if(vect[cont][cont1+1] != 'a' || vect[cont][cont1+1] != 'A'){
+                        while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                            if(vect[cont][cont1] == 0){break;}
+                            if(vect[cont][cont1] != ':' ){
+                                //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
+                                concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                            }else{
+                                break;
+                            }
+                        }//Despues concatena el atributo
+                        contador++;contador++;cont1++;cont1++;
+                    }else if(vect[cont][cont1+1] == ':'){
+                        printf("                    \033[%dmErr: \033[%dmen parametro \"%c\" no debe tener ningun valor\033[0m\n" ,ROJO,MAGENTA,'P');
+                        final[0] = compare[0] = '\0';
+                        return;
+                    }
                 }else{
-                    break;
+                    while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                        if(vect[cont][cont1] != ':'){
+                            //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
+                            concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                        }else{
+                            break;
+                        }
+                    }//Despues concatena el atributo
+                    contador++;contador++;cont1++;cont1++;
                 }
-            }//Despues concatena el atributo
-            contador++;contador++;cont1++;
-            for(;cont1 < tama;cont1++){
-                concatenar_char(final,vect[cont][cont1]);
+            }else if(get_size(vect[cont]) == cont1+1){
+                if(vect[cont][cont1] == 'r' || vect[cont][cont1] == 'R'){
+                    aux = 1;
+                }
             }
-            /*for(;cont1 < tama;cont1++){
-                concatenar_char(final,vect[cont][cont1]);
-            }*/
+
+            if(aux == 0){
+                for(;cont1 < tama;cont1++){
+                    concatenar_char(final,vect[cont][cont1]);
+                }
+                //printf("    FILL: %s,\'%s\'\n",compare,final);
+            }else{
+                concatenar_char(compare,vect[cont][cont1]);
+                //printf("    ONLY: \'%s\'\n",compare);
+            }
             if(strcasecmp(compare, ID)==0){
                 //printf("ID: \'%s\'\n",final);
                 int exceso = 0;
@@ -1835,6 +2520,7 @@ void analizar_entrada(char *entrada){
                         final[0] = compare[0] = '\0';
                         return;
                     }
+
                 }
             }else if(strcasecmp(compare, PATH)==0){
                 //printf("PATH: \'%s\'\n",final);
@@ -1852,32 +2538,152 @@ void analizar_entrada(char *entrada){
                     strcpy(r_path,final);
                     o_path = 1;
                 }
-            }else if(strcasecmp(compare, SIZE)==0){
-                //printf("SIZE: \'%s\'\n",final);
-                r_size = atoi(final);
-                if(r_size >= 0){
-                   n_size = 1;
+            }else if(strcasecmp(final, RF)==0){
+                //puts("RF: crear carpeta padre");
+                r_rf = 1;
+            }else{
+                //puts("Entra y truena");
+                if(compare[0] == 0){
+                    //Ignorara
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    //return;
                 }else{
-                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" valor negativo!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
+                    final[0] = compare[0] = '\0';
+                    tama = 0;cont1 = 1; //Reinicializar parámetros
+                    return;
+                }
+            }
+            final[0] = compare[0] = '\0';
+            tama = 0;cont1 = 1; //Reinicializar parámetros
+            //printf("    PARAMETROS: %s\n",vect[cont]);
+        }
+        /* Verifica parámetros obligatorios para REMOVER */
+        if(o_id == 1 && o_path == 1){
+            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+            if(r_rf == 1){
+               //#    buscar_id_crear_archivos(r_id,r_path,1,r_size);
+            }
+            if(r_rf == 0){
+                 //#    buscar_id_crear_archivos(r_id,r_path,0,r_size);
+            }
+            printf("    SUCCESS EXEC:\'%s\', \'%s\', \'%d\'\n", r_id, r_path, r_rf);
+        }else{
+            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+            return;
+        }
+    }
+
+    /*
+     * Analiza el comando EDIT para editar archivo o carpeta */
+    else if(strcasecmp(EDIT,vect[0]) == 0){
+        printf("  \033[%dmEDITAR ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
+
+        char r_path[300], r_id[300], r_cont[300];
+             r_path[0] =  r_id[0] =  r_cont[0] = '\0';
+        int  o_path = 0,  o_id = 0,  o_cont = 0,  o_size = 0, r_size = 0;
+        for(cont = 1;cont < esta;cont++){
+            char compare[200], final[400];compare[0] = final[0] = '\0';
+            int tama = get_size(vect[cont]), contador = 0;
+            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
+                if(vect[cont][cont1] != ':'){
+                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
+                }else{
+                    break;
+                }
+            }//Despues concatena el atributo
+            contador++;contador++;cont1++;cont1++;
+            for(;cont1 < tama;cont1++){
+                concatenar_char(final,vect[cont][cont1]);
+            }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, PATH)==0){
+                //PATH: indicará el id que se generó con el comando mount de la primera fase
+                printf("PATH: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_path,final[auxi]);
+                        }else{
+                            o_path = 1;
+                            break;
+                        }
+                    }
+                    o_path = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_path,final);
+                        o_path = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, SIZE)==0){
+                printf("SIZE: \'%s\'\n",final);
+                r_size = atoi(final);
+                if(r_size > 0){
+                    o_size= 1;
+                }else{
+                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\", \'%s\' tipo incompatible!\033[0m\n" ,ROJO,MAGENTA,SIZE,final);
                     final[0] = compare[0] = '\0';
                     tama = 0;cont1 = 1; //Reinicializar parámetros
                     return;
                 }
             }else if(strcasecmp(compare, CCONT)==0){
-                //printf("CONT: \'%s\'\n",final);
+                //CONT: indicará el id que se generó con el comando mount de la primera fase
+                printf("CONT: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
                             concatenar_char(r_cont,final[auxi]);
                         }else{
+                            o_cont = 1;
                             break;
                         }
                     }
-                    n_cont = 1;
+                    o_cont = 1;
                 }else{
-                    strcpy(r_cont,final);
-                    n_cont = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_cont,final);
+                        o_cont = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else{
                 //puts("Entra y truena");
@@ -1897,75 +2703,43 @@ void analizar_entrada(char *entrada){
             tama = 0;cont1 = 1; //Reinicializar parámetros
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
 
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && (n_cont == 1 || n_size == 1)){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC:\'%s\', \'%s\' (%s,%d)\n", r_id, r_path, r_cont, r_size);
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_path == 1 && o_id == 1 && (o_cont == 1 || o_size == 1)){
+            printf("    EDITADO: [%s] %s, \'%s\', \'%d\'\n",r_path,r_id,r_cont,r_size);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
-
-
-
-
-
     /*
-     * Analiza el comando REN para cambiar nombre de archivo o carpeta */
+     * Analiza el comando REN para editar archivo o carpeta */
     else if(strcasecmp(REN,vect[0]) == 0){
+        printf("  \033[%dmRENOMBRAR ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
 
-        printf("  \033[%dmCAMBIAR NOMBRE DE ARCHIVO O CARPETA: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_name[200];
-             r_id[0] = r_path[0] =  r_name[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0, o_name = 0;
+        char r_path[300], r_id[300], r_name[300];
+             r_path[0] =  r_id[0] =  r_name[0] = '\0';
+        int  o_path = 0,  o_id = 0,  o_name = 0;
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
                     break;
                 }
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, PATH)==0){
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, PATH)==0){
+                //PATH: indicará el id que se generó con el comando mount de la primera fase
                 //printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
@@ -1973,29 +2747,71 @@ void analizar_entrada(char *entrada){
                         if(final[auxi] != '"'){
                             concatenar_char(r_path,final[auxi]);
                         }else{
+                            o_path = 1;
                             break;
                         }
                     }
                     o_path = 1;
                 }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_path,final);
+                        o_path = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                //printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else if(strcasecmp(compare, NAME)==0){
-                //printf("CONT: \'%s\'\n",final);
+                //NAME: indicará el id que se generó con el comando mount de la primera fase
+                //printf("NAME: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
                             concatenar_char(r_name,final[auxi]);
                         }else{
+                            o_name = 1;
                             break;
                         }
                     }
                     o_name = 1;
                 }else{
-                    strcpy(r_name,final);
-                    o_name = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_name,final);
+                        o_name = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else{
                 //puts("Entra y truena");
@@ -2015,32 +2831,28 @@ void analizar_entrada(char *entrada){
             tama = 0;cont1 = 1; //Reinicializar parámetros
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
 
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && o_name == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\' (%s)\n", r_id, r_path, r_name);
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_path == 1 && o_id == 1 && o_name == 1){
+            printf("    EDITADO: [%s] %s, \'%s\', \'%d\'\s",r_path,r_id,r_name);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
 
-
-
-
-
-
-
     /*
-     * Analiza el comando MKFILE para crear carpetas */
+     * Analiza el comando MKDIR para crear archivos */
     else if(strcasecmp(MKDIR,vect[0]) == 0){
 
-        printf("  \033[%dmCREAR CARPETA: %s\033[0m\a\n",VERDE,vect[0]);
+        printf("  \033[%dmCREAR DIRECTORIO: %s\033[0m\a\n",VERDE,vect[0]);
         char r_id[10], r_path[200];
              r_id[0] = r_path[0] = '\0';
         //Para verificar si se ingresaron los parametros obligatorios
         int r_p = 0, o_id = 0, o_path = 0;
+
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0, aux = 0;
@@ -2049,7 +2861,7 @@ void analizar_entrada(char *entrada){
                 if(vect[cont][cont1] == 'p' || vect[cont][cont1] == 'P'){
                     if(vect[cont][cont1+1] != 'a' || vect[cont][cont1+1] != 'A'){
                         while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-
+                            if(vect[cont][cont1] == 0){break;}
                             if(vect[cont][cont1] != ':' ){
                                 //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
                                 concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
@@ -2057,22 +2869,22 @@ void analizar_entrada(char *entrada){
                                 break;
                             }
                         }//Despues concatena el atributo
-                        contador++;contador++;cont1++;
-                    }else if(vect[cont][cont1+1] == '='){
+                        contador++;contador++;cont1++;cont1++;
+                    }else if(vect[cont][cont1+1] == ':'){
                         printf("                    \033[%dmErr: \033[%dmen parametro \"%c\" no debe tener ningun valor\033[0m\n" ,ROJO,MAGENTA,'P');
                         final[0] = compare[0] = '\0';
                         return;
                     }
                 }else{
                     while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-                        if(vect[cont][cont1] != ':' ){
+                        if(vect[cont][cont1] != ':'){
                             //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
                             concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                         }else{
                             break;
                         }
                     }//Despues concatena el atributo
-                    contador++;contador++;cont1++;
+                    contador++;contador++;cont1++;cont1++;
                 }
             }else if(get_size(vect[cont]) == cont1+1){
                 if(vect[cont][cont1] == 'p' || vect[cont][cont1] == 'P'){
@@ -2083,7 +2895,7 @@ void analizar_entrada(char *entrada){
             if(aux == 0){
                 for(;cont1 < tama;cont1++){
                     concatenar_char(final,vect[cont][cont1]);
-                }//aux == 0;
+                }
                 //printf("    FILL: %s,\'%s\'\n",compare,final);
             }else{
                 concatenar_char(compare,vect[cont][cont1]);
@@ -2160,105 +2972,45 @@ void analizar_entrada(char *entrada){
         /* Verifica parámetros obligatorios para REMOVER */
         if(o_id == 1 && o_path == 1){
             //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            //#    buscar_id_crear_carpetas(r_id,r_path,r_p);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\', (%d)\n", r_id, r_path, r_p);
+            if(r_p == 1){
+               //#    buscar_id_crear_archivos(r_id,r_path,1,r_size);
+            }
+            if(r_p == 0){
+                 //#    buscar_id_crear_archivos(r_id,r_path,0,r_size);
+            }
+            printf("    SUCCESS EXEC:\'%s\', \'%s\', \'%d\'\n", r_id, r_path, r_p);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
 
-
-
-
-
-
-
-
     /*
-     * Analiza el comando CP copia todo el contenido de un archivo o carpeta a otro */
+     * Analiza el comando CP para editar archivo o carpeta */
     else if(strcasecmp(CP,vect[0]) == 0){
+        printf("  \033[%dmRENOMBRAR ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
 
-        printf("  \033[%dmCOPIA CONTENIDO DE ARCHIVO O CARPETA A OTRO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_dest[200], r_iddest[10];
-             r_id[0] = r_path[0] =  r_dest[0] =  r_iddest[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0, o_dest = 0, o_iddest = 0;
+        char r_path[300], r_id[300], r_dest[300], r_iddest[300];
+             r_path[0] =  r_id[0] =  r_dest[0] =  r_iddest[0] ='\0';
+        int  o_path = 0,  o_id = 0,  o_dest = 0, o_iddest = 0;
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
                     break;
                 }
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, IDDEST)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_iddest,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_iddest = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_iddest,final);
-                        o_iddest = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, PATH)==0){
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, PATH)==0){
+                //PATH: indicará el id que se generó con el comando mount de la primera fase
                 //printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
@@ -2266,29 +3018,96 @@ void analizar_entrada(char *entrada){
                         if(final[auxi] != '"'){
                             concatenar_char(r_path,final[auxi]);
                         }else{
+                            o_path = 1;
                             break;
                         }
                     }
                     o_path = 1;
                 }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_path,final);
+                        o_path = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                //printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, IDDEST)==0){
+                //IDDEST: indicará el id que se generó con el comando mount de la primera fase
+                //printf("IDDEST: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_iddest,final[auxi]);
+                        }else{
+                            o_iddest = 1;
+                            break;
+                        }
+                    }
+                    o_iddest = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_iddest,final);
+                        o_iddest = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else if(strcasecmp(compare, DEST)==0){
-                //printf("CONT: \'%s\'\n",final);
+                //DEST: indicará el id que se generó con el comando mount de la primera fase
+                //printf("DEST: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
                             concatenar_char(r_dest,final[auxi]);
                         }else{
+                            o_dest = 1;
                             break;
                         }
                     }
                     o_dest = 1;
                 }else{
-                    strcpy(r_dest,final);
-                    o_dest = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_dest,final);
+                        o_dest = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else{
                 //puts("Entra y truena");
@@ -2308,106 +3127,44 @@ void analizar_entrada(char *entrada){
             tama = 0;cont1 = 1; //Reinicializar parámetros
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
 
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && o_iddest == 1 && o_dest == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\' (%s, %s)\n", r_id, r_path, r_iddest, r_dest);
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_path == 1 && o_id == 1 && o_dest == 1 && o_iddest == 1){
+            printf("    EDITADO: [%s] %s, \'%s\', \'%s\'\n",r_path,r_id,r_dest,r_iddest);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
         }
     }
 
-
-
-
-
-
     /*
-     * Analiza el comando MV mueve todo el contenido de un archivo o carpeta a otro */
+     * Analiza el comando CP para editar archivo o carpeta */
     else if(strcasecmp(MV,vect[0]) == 0){
+        printf("  \033[%dmRENOMBRAR ARCHIVO: %s\033[0m\a\n",VERDE,vect[0]);
 
-        printf("  \033[%dmMUEVE CONTENIDO DE ARCHIVO O CARPETA A OTRO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_dest[200], r_iddest[10];
-             r_id[0] = r_path[0] =  r_dest[0] =  r_iddest[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0, o_dest = 0, o_iddest = 0;
+        char r_path[300], r_id[300], r_dest[300], r_iddest[300];
+             r_path[0] =  r_id[0] =  r_dest[0] =  r_iddest[0] ='\0';
+        int  o_path = 0,  o_id = 0,  o_dest = 0, o_iddest = 0;
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
                     break;
                 }
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, IDDEST)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_iddest,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_iddest = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_iddest,final);
-                        o_iddest = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-                }
-            }else if(strcasecmp(compare, PATH)==0){
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
+            if(strcasecmp(compare, PATH)==0){
+                //PATH: indicará el id que se generó con el comando mount de la primera fase
                 //printf("PATH: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
@@ -2415,150 +3172,97 @@ void analizar_entrada(char *entrada){
                         if(final[auxi] != '"'){
                             concatenar_char(r_path,final[auxi]);
                         }else{
+                            o_path = 1;
                             break;
                         }
                     }
                     o_path = 1;
                 }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_path,final);
+                        o_path = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, ID)==0){
+                //ID: indicará el id que se generó con el comando mount de la primera fase
+                //printf("ID: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_id,final[auxi]);
+                        }else{
+                            o_id = 1;
+                            break;
+                        }
+                    }
+                    o_id = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_id,final);
+                        o_id = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
+                }
+            }else if(strcasecmp(compare, IDDEST)==0){
+                //IDDEST: indicará el id que se generó con el comando mount de la primera fase
+                //printf("IDDEST: \'%s\'\n",final);
+                /* Verificar si no esta entre comillas */
+                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
+                    for(;auxi < end;auxi++){
+                        if(final[auxi] != '"'){
+                            concatenar_char(r_iddest,final[auxi]);
+                        }else{
+                            o_iddest = 1;
+                            break;
+                        }
+                    }
+                    o_iddest = 1;
+                }else{
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_iddest,final);
+                        o_iddest = 1;
+                    }else{
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
+                        final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
+                        return;
+                    }
                 }
             }else if(strcasecmp(compare, DEST)==0){
-                //printf("CONT: \'%s\'\n",final);
+                //DEST: indicará el id que se generó con el comando mount de la primera fase
+                //printf("DEST: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
                             concatenar_char(r_dest,final[auxi]);
                         }else{
+                            o_dest = 1;
                             break;
                         }
                     }
                     o_dest = 1;
                 }else{
-                    strcpy(r_dest,final);
-                    o_dest = 1;
-                }
-            }else{
-                //puts("Entra y truena");
-                if(compare[0] == 0){
-                    //Ignorara
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    //return;
-                }else{
-                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    return;
-                }
-            }
-            final[0] = compare[0] = '\0';
-            tama = 0;cont1 = 1; //Reinicializar parámetros
-            //printf("    PARAMETROS: %s\n",vect[cont]);
-        }
-
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && o_iddest == 1 && o_dest == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\' (%s, %s)\n", r_id, r_path, r_iddest, r_dest);
-        }else{
-            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
-            return;
-        }
-    }
-
-
-
-
-
-
-
-    /*
-     * Analiza el comando FIND para buscar archivo o carpeta */
-    else if(strcasecmp(FIND,vect[0]) == 0){
-
-        printf("  \033[%dmBUSCAR ARCHIVO O CARPETA: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_name[200];
-             r_id[0] = r_path[0] =  r_name[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_id = 0, o_path = 0, o_name = 0;
-        for(cont = 1;cont < esta;cont++){
-            char compare[200], final[400];compare[0] = final[0] = '\0';
-            int tama = get_size(vect[cont]), contador = 0;
-            while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-                if(vect[cont][cont1] != ':'){
-                    concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
-                }else{
-                    break;
-                }
-            }//Despues concatena el atributo
-            contador++;contador++;cont1++;
-            for(;cont1 < tama;cont1++){
-                concatenar_char(final,vect[cont][cont1]);
-            }
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
+                    if(strcmp(final,"") != 0){
+                        strcpy(r_dest,final);
+                        o_dest = 1;
                     }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
                         final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
                         return;
                     }
                 }
-            }else if(strcasecmp(compare, PATH)==0){
-                //printf("PATH: \'%s\'\n",final);
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            concatenar_char(r_path,final[auxi]);
-                        }else{
-                            break;
-                        }
-                    }
-                    o_path = 1;
-                }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
-                }
-            }else if(strcasecmp(compare, NAME)==0){
-                //printf("CONT: \'%s\'\n",final);
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            concatenar_char(r_name,final[auxi]);
-                        }else{
-                            break;
-                        }
-                    }
-                    o_name = 1;
-                }else{
-                    strcpy(r_name,final);
-                    o_name = 1;
-                }
             }else{
                 //puts("Entra y truena");
                 if(compare[0] == 0){
@@ -2577,11 +3281,12 @@ void analizar_entrada(char *entrada){
             tama = 0;cont1 = 1; //Reinicializar parámetros
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
 
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && o_name == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\' (%s)\n", r_id, r_path, r_name);
+        /* Verifica parámetros obligatorios para INICIAR SESION */
+        if(o_path == 1 && o_id == 1 && o_dest == 1 && o_iddest == 1){
+            printf("    MOVIDO: [%s] %s, \'%s\', \'%s\'\n",r_path,r_id,r_dest,r_iddest);
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
@@ -2589,246 +3294,82 @@ void analizar_entrada(char *entrada){
     }
 
 
+    //FIND
 
-
-
-
-    /*
-     * Analiza el comando CHOWN para cambiar propietario de carpetas y archivos*/
-    else if(strcasecmp(CHOWN,vect[0]) == 0){
-
-        printf("  \033[%dmCAMBIAR PROPIETARIOS: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_id[10], r_path[200], r_usr[10];
-             r_id[0] = r_path[0] = r_usr[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int r_r = 0, o_id = 0, o_path = 0, o_usr = 0;
-
-        for(cont = 1;cont < esta;cont++){
-            char compare[200], final[400];compare[0] = final[0] = '\0';
-            int tama = get_size(vect[cont]), contador = 0, aux = 0;
-            if(vect[cont][cont1] == 'r' || vect[cont][cont1] == 'R'){
-                if(vect[cont][cont1+1] != ' '){
-                    aux = 1;
-                }else{
-                    printf("                    \033[%dmErr: \033[%dmen parametro \"%c\" no debe tener ningun valor\033[0m\n" ,ROJO,MAGENTA,'P');
-                    final[0] = compare[0] = '\0';
-                    return;
-                }aux = 1;
-            }else{
-                while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
-
-                    if(vect[cont][cont1] != ':' ){
-                        //printf("    DATA: \'%c\'\n",vect[cont][cont1]);
-                        concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
-                    }else{
-                        break;
-                    }
-                }//Despues concatena el atributo
-                contador++;contador++;cont1++;
-            }
-            if(aux == 0){
-                for(;cont1 < tama;cont1++){
-                    concatenar_char(final,vect[cont][cont1]);
-                }
-                //printf("    FILL: %s,\'%s\'\n",compare,final);
-            }else{
-                concatenar_char(compare,vect[cont][cont1]);
-                //printf("    ONLY: \'%s\'\n",compare);
-            }
-            if(strcasecmp(compare, ID)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_id,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
-                        }else{
-                            break;
-                        }
-                    }
-                    o_id = 1;
-                }else{
-                    if(get_size(final) <= 10){
-                        strcpy(r_id,final);
-                        o_id = 1;
-                    }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                        final[0] = compare[0] = '\0';
-                        return;
-                    }
-
-                }
-            }else if(strcasecmp(compare, PATH)==0){
-                //printf("PATH: \'%s\'\n",final);
-                /* Verificar si no esta entre comillas */
-                if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                    for(;auxi < end;auxi++){
-                        if(final[auxi] != '"'){
-                            concatenar_char(r_path,final[auxi]);
-                        }else{
-                            break;
-                        }
-                    }
-                    o_path = 1;
-                }else{
-                    strcpy(r_path,final);
-                    o_path = 1;
-                }
-            }else if(strcasecmp(compare, USR)==0){
-                 int exceso = 0;
-                 /* Verificar si no esta entre comillas */
-                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
-                     for(;auxi < end;auxi++){
-                         if(final[auxi] != '"'){
-                             exceso++;
-                             if(exceso <= 10){
-                                 concatenar_char(r_usr,final[auxi]);
-                             }else{
-                                 printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                 final[0] = compare[0] = '\0';
-                                 return;
-                             }
-                         }else{
-                             break;
-                         }
-                     }
-                     o_usr = 1;
-                 }else{
-                     if(get_size(final) <= 10){
-                         strcpy(r_usr,final);
-                         o_usr = 1;
-                     }else{
-                         printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                         final[0] = compare[0] = '\0';
-                         return;
-                     }
-
-                 }
-            }else if(strcasecmp(compare, R)==0){
-                //puts("R: es recursivo");
-                r_r = 1;
-            }else{
-                //puts("Entra y truena");
-                if(compare[0] == 0){
-                    //Ignorara
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    //return;
-                }else{
-                    printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,compare);
-                    final[0] = compare[0] = '\0';
-                    tama = 0;cont1 = 1; //Reinicializar parámetros
-                    return;
-                }
-            }
-            final[0] = compare[0] = '\0';
-            tama = 0;cont1 = 1; //Reinicializar parámetros
-            //printf("    PARAMETROS: %s\n",vect[cont]);
-        }
-        /* Verifica parámetros obligatorios para REMOVER */
-        if(o_id == 1 && o_path == 1 && o_usr == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: '%s\', '%s\', '%s\' (%d)\n", r_id, r_path, r_usr, r_r);
-        }else{
-            printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
-            return;
-        }
-    }
-
-
-
-
-
-
+    //CHOWN
 
     /*
-     * Analiza el comando CHGRP para cambiar grupo al que pertenece usuario */
+     * Analizador de la CHGRP  */
     else if(strcasecmp(CHGRP,vect[0]) == 0){
+        printf("  \033[%dmCREAR USUARIO: %s\033[0m\a\n",VERDE,vect[0]);
 
-        printf("  \033[%dmCAMBIAR GRUPO USUARIO: %s\033[0m\a\n",VERDE,vect[0]);
-        char r_usr[10], r_grp[10];
-             r_usr[0] = r_grp[0] = '\0';
-        //Para verificar si se ingresaron los parametros obligatorios
-        int o_usr = 0, o_grp = 0;
+        char r_usr[300], r_grp[300];
+             r_usr[0] =  r_grp[0] = '\0';
+        int  o_usr = 0,  o_grp = 0;
         for(cont = 1;cont < esta;cont++){
             char compare[200], final[400];compare[0] = final[0] = '\0';
             int tama = get_size(vect[cont]), contador = 0;
             while(1){//Concatena todo lo que viene entre '-' y '='; ej: - 'size' =
+                if(vect[cont][cont1] == 0){break;}
                 if(vect[cont][cont1] != ':'){
                     concatenar_char(compare,vect[cont][cont1]);cont1++;contador++;
                 }else{
                     break;
                 }
+
             }//Despues concatena el atributo
-            contador++;contador++;cont1++;
+            contador++;contador++;cont1++;cont1++;
             for(;cont1 < tama;cont1++){
                 concatenar_char(final,vect[cont][cont1]);
             }
+            //printf("    DATA: %s,\'%s\'\n",compare,final);
             if(strcasecmp(compare, USR)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
+                //USR: indicará el id que se generó con el comando mount de la primera fase
+                printf("USR: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_usr,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
+                            concatenar_char(r_usr,final[auxi]);
                         }else{
+                            o_usr = 1;
                             break;
                         }
                     }
                     o_usr = 1;
                 }else{
-                    if(get_size(final) <= 10){
+                    if(strcmp(final,"") != 0){
                         strcpy(r_usr,final);
                         o_usr = 1;
                     }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
                         final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
                         return;
                     }
                 }
             }else if(strcasecmp(compare, GRP)==0){
-                //printf("ID: \'%s\'\n",final);
-                int exceso = 0;
+                //GRP: indicará el id que se generó con el comando mount de la primera fase
+                printf("GRP: \'%s\'\n",final);
                 /* Verificar si no esta entre comillas */
                 if(final[0] == '\"'){int auxi = 1, end = sizeof(final);
                     for(;auxi < end;auxi++){
                         if(final[auxi] != '"'){
-                            exceso++;
-                            if(exceso <= 10){
-                                concatenar_char(r_grp,final[auxi]);
-                            }else{
-                                printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
-                                final[0] = compare[0] = '\0';
-                                return;
-                            }
+                            concatenar_char(r_grp,final[auxi]);
                         }else{
+                            o_grp = 1;
                             break;
                         }
                     }
                     o_grp = 1;
                 }else{
-                    if(get_size(final) <= 10){
+                    if(strcmp(final,"") != 0){
                         strcpy(r_grp,final);
                         o_grp = 1;
                     }else{
-                        printf("                    \033[%dmErr: \033[%dmen parametro \"%s\" el tamaño excede de 10\033[0m\n" ,ROJO,MAGENTA,final);
+                        printf("                    \033[%dmErr: \033[%dmcommand \"%s\" incompatible!\033[0m\n" ,ROJO,MAGENTA,final);
                         final[0] = compare[0] = '\0';
+                        tama = 0;cont1 = 1; //Reinicializar parámetros
                         return;
                     }
                 }
@@ -2850,11 +3391,18 @@ void analizar_entrada(char *entrada){
             tama = 0;cont1 = 1; //Reinicializar parámetros
             //printf("    PARAMETROS: %s\n",vect[cont]);
         }
+        /* Verificar valores del variables no obligatorias
+         * Si existen, si no se inicializa con valor por defecto */
 
-        /* Verifica parámetros obligatorios para REMOVER */
+        /* Verifica parámetros obligatorios para INICIAR SESION */
         if(o_usr == 1 && o_grp == 1){
-            //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
-            printf("    SUCCESS EXEC: \'%s\', \'%s\'\n", r_usr, r_grp);
+            if(get_size(r_usr) < 10 && get_size(r_grp) < 10){
+                //crear_reporte(r_path,a_name,r_ext,r_id,r_name);
+                printf("    GRUPO CAMBIDADO: [%s] %s\n",r_usr,r_grp);
+            }else{
+                printf("                    \033[%dmErr: \033[%dmen los parametros, exceden el tamaño \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
+                return;
+            }
         }else{
             printf("                    \033[%dmErr: \033[%dmfaltan parametros en \"%s\" \033[0m\n" ,ROJO,MAGENTA,vect[0]);
             return;
@@ -2863,11 +3411,7 @@ void analizar_entrada(char *entrada){
 
 
 
-
-
-
-
-
+    //LN
 
 
     /* End of all (analyzer) */
@@ -2877,6 +3421,7 @@ void analizar_entrada(char *entrada){
 
     printf("                        FINALIZANDO PROCESO... %s \n",vect[0]);
 }
+
 
 
 
@@ -2934,62 +3479,6 @@ void analizar_comando(char *cmd){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::    AREA DE MENSAJES DE ESTADO
 /*
  * Funciones auxiliares para el analisis de las entradas
@@ -3015,7 +3504,6 @@ void quitar_espacios_en_blanco(char s[], char c){
        }
     s[j] = '\0';
 }
-
 
 int comparar(char *a,char *b){
 
@@ -3061,13 +3549,11 @@ int comparar_add(char *a,char *b){
     return 1;
 }
 
-
 void concatenar_char(char* s, char c){
     int len = strlen(s);
     s[len] = c;
     s[len+1] = '\0';
 }
-
 
 /*
  * Crear carpeta o directorio en el sistema */
@@ -3112,7 +3598,7 @@ void crear_carpeta(char *carpeta){
                         strcat(array[1],"/");
                     }
                     if(mkdir(array[1], 0777) == -1){
-                        err("no se puede crear carpeta, se denego permiso o ya existe: ", array[1]);
+                        war("no se puede crear carpeta, se denego permiso o ya existe: ", array[1]);
                     }else{
                         //printf("array[%d]=\"%s\"\n", i, array[1]);
                         //closedir(array[1]);
@@ -3125,7 +3611,6 @@ void crear_carpeta(char *carpeta){
         war("drectorio existente",carpeta);
     }
 }
-
 
 /*
  * Verifica carpeta o directorio en el sistema */
@@ -3176,6 +3661,7 @@ void establecer_nombre_dot(char *path,char *nombre){
     //strcat(ubicacion_archivo, ".dsk"); /* add the extension */
 
 }
+
 int get_size(char *informacion){
     int i=0;
     while((informacion[i]!=0) && (informacion[i]!=127))
@@ -3201,21 +3687,27 @@ void limpiar_cadena(char *cadena)
   if (p)
     *p = '\0';
 }
+
 void suc(char *info, char *why){
     printf("                    \033[%dmInfo: \033[%dm \"%s\" %s \033[0m\n" ,AMARILLO,MAGENTA,info, why);
 }
+
 void war(char *error, char *why){
     printf("                    \033[%dmWarn: \033[%dm \"%s\" en.. %s \033[0m\n" ,AMARILLO,MAGENTA,error, why);
 }
+
 void err(char *error, char *why){
     printf("                    \033[%dmErr: \033[%dm \"%s\" por.. %s \033[0m\n" ,ROJO,MAGENTA,error, why);
 }
+
 void exe(char *what, char *where){
     printf("    \033[%dm%s %s\033[0m\a\n",VERDE,what,where);
 }
+
 void inf(char *what){
     printf("    \033[%dmInfo: %s \033[0m\a\n",CYAN,what);
 }
+
 char *get_name(char *disco){
     int  e = 0;
     //printf ("Cadena: %s\n",disco);
@@ -3262,7 +3754,6 @@ char *get_name(char *disco){
     return r_name;
 
 }
-
 
 char *get_path(char *disco){
     int  e = 0;
@@ -3313,10 +3804,6 @@ char *get_path(char *disco){
     return directorio;
 
 }
-
-
-
-
 
 char *get_ext(char *disco){
     int  e = 0;

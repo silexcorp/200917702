@@ -1,5 +1,19 @@
 # depslib dependency file v1.0
-1469779803 source:/home/lex/Documentos/Proyectos/200917702/ProyectoUno/main.c
+1472036684 source:/home/lex/Documentos/Proyectos/200917702/ProyectoUno/main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
+	"data.h"
+
+1472036719 /home/lex/Documentos/Proyectos/200917702/ProyectoUno/include/data.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<dirent.h>
+	<sys/stat.h>
+	"errno.h"
+
+1472036852 source:/home/lex/Documentos/Proyectos/200917702/ProyectoUno/src/data.c
+	"data.h"
 

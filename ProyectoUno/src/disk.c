@@ -1533,6 +1533,59 @@ void contar_logicas(char* dir,int posicion){
 
 
 
+char* substr(char* cadena, int comienzo, int longitud)
+{
+    if (longitud == 0)
+        longitud = strlen(cadena)-comienzo;
+
+    char *nuevo = (char*)malloc(sizeof(char) * (longitud+1));
+    nuevo[longitud] = '\0';
+    strncpy(nuevo, cadena + comienzo, longitud);
+
+    return nuevo;
+}
+
+char** str_split(char* a_str, const char a_delim)//Split para reconocer cada comando y sus atributos
+{
+    char** result    = 0;
+    size_t count     = 0;
+    char* tmp        = a_str;
+    char* last_comma = 0;
+    char delim[2];
+    delim[0] = a_delim;
+    delim[1] = 0;
+
+    while (*tmp)
+    {
+        if (a_delim == *tmp)
+        {
+            count++;
+            last_comma = tmp;
+        }
+        tmp++;
+    }
+    count += last_comma < (a_str + strlen(a_str) - 1);
+    count++;
+
+    result = malloc(sizeof(char*) * count);
+
+    if (result)
+    {
+        size_t idx  = 0;
+        char* token = strtok(a_str, delim);
+
+        while (token)
+        {
+            assert(idx < count);
+            *(result + idx++) = strdup(token);
+            token = strtok(0, delim);
+        }
+        assert(idx == count - 1);
+        *(result + idx) = 0;
+    }
+
+    return result;
+}
 
 
 

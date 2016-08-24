@@ -18,6 +18,7 @@
 
 
 
+char id[10];
 int part_mont;
 int cont;
 int contador_extendidas;
@@ -111,80 +112,6 @@ struct SUPERB{
 
 
 
-/*
- *  ÁRBOL VIRTUAL DE DIRECTORIO
- */
-struct AVD{
-    time_t avd_fecha_creacion;
-    char avd_name_directorio[16];
-    int  avd_ap_array_subdirectorios[6];
-    int  avd_ap_detalle_directorio;
-    int  avd_ap_avd;
-};
-/* BITMAP ÁRBOL VIRTUAL DE DIRECTORIO */
-struct BITMAPAVD{
-    char state;
-};
-
-
-struct ARCHIVE{
-    char    dd_file_nombre[16];         //Maneja el nombre del archivo
-    int     dd_file_ap_inodo;           //Apuntador al inodo
-    time_t  dd_file_date_creacion;      //Fecha de creación del archivo (dd/mm/yyyy hh:mm)
-    time_t  dd_file_date_modificacion;  //Fecha de modificación del archivo (dd/mm/yyyy hh:mm)
-};
-/*
- *  DETALLE DE DIRECTORIO
- */
-struct DD{
-    struct ARCHIVE dd_archive_1;       //Estructura con información del archivo
-    struct ARCHIVE dd_archive_2;       //Estructura con información del archivo
-    struct ARCHIVE dd_archive_3;       //Estructura con información del archivo
-    struct ARCHIVE dd_archive_4;       //Estructura con información del archivo
-    struct ARCHIVE dd_archive_5;       //Estructura con información del archivo
-    int     dd_ap_detalle_directorio;//Si se quiere ingresar un sexto archivo y no hay espacio enesta
-                                    //estructura de detalle directorio, apunta a otraestructura de detalle de directorio.
-};
-/* BITMAP DE DETALLE DE DIRECTORIO */
-struct BITMAPDD{
-    char state;
-};
-
-
-/*
- *  TABLA DE INODOS
- */
-struct TI{
-    int i_count_inodo;          //Número de i-nodo
-    int i_size_file;            //Tamaño del archivo
-    int i_count_bloques_asignados;//Número de bloques asignados
-    int i_array_bloques[4];     //Arreglo de 4 apuntadores a bloques de datos para guardarel archivo.
-    int i_ap_indirecto;         //Un apuntador indirecto por si el archivo ocupa más de 4bloques de datos,
-                                //para el manejo de archivos de tamaño“grande”.
-};
-
-/* BITMAP DE TABLA DE INODOS */
-struct BITMAPTI{
-    char state;                 //Mapa de bit para verificar elEstado del i-nodo
-};
-
-
-
-/*
- *  BLOQUE DE DATOS
- */
-struct BD{
-    char bd_data[25];           //Contiene la información del archivo
-};
-/* BITMAP DE BLOQUE DE DATOS */
-struct BITMAPBD{
-    char state;                 //Mapa de bit para verificar los bloquesDe datos,
-};
-
-
-
-
-
 /* LOG BITACORA */
 struct LOG{
     char log_tipo_operacion;    //El tipo de operación a realizars
@@ -197,10 +124,6 @@ struct LOG{
 
 
 
-
-
-
-//ESTRUCUTURAS FASE 2
 typedef struct{
 
      int s_inodes_count;//numero total de inodods
@@ -261,6 +184,18 @@ typedef struct{
 }Bloques_Archivo;
 
 
+
+
+typedef struct{
+
+     int gid_uid;
+     char tipo[1];
+     char grupo[10];
+     char usuario[10];
+     char contrasenia[10];
+
+}Users;
+Users login;
 
 
 

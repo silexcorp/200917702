@@ -80,6 +80,8 @@ extern char letra(int n);
 extern void Reporte_Disco(char id[],char path_img[],char name[]);
 extern void Reporte_MBR_EBR(char id[],char path_img[],char name[]);
 
-
+/* Fase dos */
+char* substr(char* cadena, int comienzo, int longitud);
+char** str_split(char* a_str, const char a_delim);
 
 #endif // DISK_H
